@@ -46,6 +46,7 @@ public class FileUtils {
     }
 
     private void csvWriter(List<String[]> fileArray, Path path) throws Exception {
+        System.out.println("Writing to path : "+path.toString());
         CSVWriter writer = new CSVWriter(new FileWriter(path.toString()));
         for (String[] array : fileArray) {
             writer.writeNext(array,false);
