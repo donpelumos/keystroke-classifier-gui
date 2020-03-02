@@ -1,6 +1,7 @@
 package ie.ait.bootstrap;
 
 import com.opencsv.CSVWriter;
+import ie.ait.models.KeyStrokeFeature;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -38,16 +39,16 @@ public class FileUtils {
     }
 
     public void writeEmpty(Path path) throws Exception {
-        List<String[]> sample = new ArrayList<>();
-        sample.add(new String[]{"Name","Country"});
-        sample.add(new String[]{"John","Canadian"});
+        KeyStrokeFeature keyStrokeFeature = new KeyStrokeFeature();
+        keyStrokeFeature.mockInitialization();
+        List<String[]> sample = Utils.keyStrokeFeatureToList(keyStrokeFeature);
         csvWriter(sample, Paths.get(path.toString()+File.separator+"sample.csv"));
     }
 
-    private void csvWriter(List<String[]> stringArray, Path path) throws Exception {
+    private void csvWriter(List<String[]> fileArray, Path path) throws Exception {
         CSVWriter writer = new CSVWriter(new FileWriter(path.toString()));
-        for (String[] array : stringArray) {
-            writer.writeNext(array);
+        for (String[] array : fileArray) {
+            writer.writeNext(array,false);
         }
         writer.close();
     }
