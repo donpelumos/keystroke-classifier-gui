@@ -24,7 +24,6 @@ public class HomeController {
             fileUtils.createTrainFile();
         }
         else{
-            //TODO: READ TRAIN FILE AND GET CURRENT SIZE INFO
             this.keyStrokeFeatureFile = fileUtils.readTrainFile();
         }
         //TODO: CREATE EXCEPTION CLASS FOR HANDLING ERRORS.
