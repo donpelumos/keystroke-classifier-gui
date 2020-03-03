@@ -1,7 +1,7 @@
-package ie.ait.bootstrap;
+package ie.ait.utils;
 
-import ie.ait.KeyStrokeFileType;
-import ie.ait.models.KeyStrokeFeature;
+import ie.ait.models.enums.KeyStrokeFileType;
+import ie.ait.models.classes.KeyStrokeFeature;
 
 import java.util.ArrayList;
 import java.util.List;

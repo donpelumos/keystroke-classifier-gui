@@ -1,13 +1,100 @@
-package ie.ait.models;
+package ie.ait.models.classes;
+
+import com.opencsv.bean.AbstractBeanField;
+import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvCustomBindByName;
+import com.opencsv.exceptions.CsvConstraintViolationException;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
 
 /**
  * Created by Pelumi.Oyefeso on 02-Mar-2020
  */
-public class KeyStrokeFeature {
-    private double A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z;
-    private double TH,HE,IN,ER,AN,RE,ND,AT,ON,NT;
-    private int modal1, modal2;
+
+public class KeyStrokeFeature{
+    @CsvBindByName
+    private double A;
+    @CsvBindByName
+    private double B;
+    @CsvBindByName
+    private double C;
+    @CsvBindByName
+    private double D;
+    @CsvBindByName
+    private double E;
+    @CsvBindByName
+    private double F;
+    @CsvBindByName
+    private double G;
+    @CsvBindByName
+    private double H;
+    @CsvBindByName
+    private double I;
+    @CsvBindByName
+    private double J;
+    @CsvBindByName
+    private double K;
+    @CsvBindByName
+    private double L;
+    @CsvBindByName
+    private double M;
+    @CsvBindByName
+    private double N;
+    @CsvBindByName
+    private double O;
+    @CsvBindByName
+    private double P;
+    @CsvBindByName
+    private double Q;
+    @CsvBindByName
+    private double R;
+    @CsvBindByName
+    private double S;
+    @CsvBindByName
+    private double T;
+    @CsvBindByName
+    private double U;
+    @CsvBindByName
+    private double V;
+    @CsvBindByName
+    private double W;
+    @CsvBindByName
+    private double X;
+    @CsvBindByName
+    private double Y;
+    @CsvBindByName
+    private double Z;
+
+    @CsvBindByName
+    private double TH;
+    @CsvBindByName
+    private double HE;
+    @CsvBindByName
+    private double IN;
+    @CsvBindByName
+    private double ER;
+    @CsvBindByName
+    private double AN;
+    @CsvBindByName
+    private double RE;
+    @CsvBindByName
+    private double ND;
+    @CsvBindByName
+    private double AT;
+    @CsvBindByName
+    private double ON;
+    @CsvBindByName
+    private double NT;
+
+    @CsvBindByName
+    private int modal1;
+    @CsvBindByName
+    private int modal2;
+
+    @CsvBindByName(column = "class")
     private String featureClass;
+
+    public KeyStrokeFeature(){}
+
 
     public String getFeatureClass() {
         return featureClass;
