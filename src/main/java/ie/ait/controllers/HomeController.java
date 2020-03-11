@@ -18,6 +18,9 @@ public class HomeController {
     private KeyStrokeFeatureFile keyStrokeFeatureFile;
     private List<KeyStrokeFeature> keyStrokeFeatures;
 
+    /**
+       The "initiliaze" method is automatically called because this class is annotated with the @FXML.
+     */
     public void initialize(){
         this.fileUtils = new FileUtils();
         if(!isTrainDataFileExists()){
@@ -27,6 +30,12 @@ public class HomeController {
             this.keyStrokeFeatureFile = fileUtils.readTrainFile();
         }
         //TODO: CREATE EXCEPTION CLASS FOR HANDLING ERRORS.
+        try {
+            //fileUtils.appendRandomTrainData();
+        }
+        catch(Exception e){
+
+        }
     }
 
     private boolean isTrainDataFileExists(){

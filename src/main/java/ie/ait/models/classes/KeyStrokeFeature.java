@@ -423,12 +423,23 @@ public class KeyStrokeFeature{
         this.modal1 = 5; this.modal2 = 6;
         this.featureClass = "Class";
     }
+
+    public void randomInitialization(){
+        this.A = Double.parseDouble(String.format("%.2f",Math.random()));this.B = Double.parseDouble(String.format("%.2f",Math.random()));this.C = Double.parseDouble(String.format("%.2f",Math.random()));this.D = Double.parseDouble(String.format("%.2f",Math.random()));this.E = Double.parseDouble(String.format("%.2f",Math.random()));this.F = Double.parseDouble(String.format("%.2f",Math.random()));this.G = Double.parseDouble(String.format("%.2f",Math.random()));this.H = Double.parseDouble(String.format("%.2f",Math.random()));this.I = Double.parseDouble(String.format("%.2f",Math.random()));
+        this.J = Double.parseDouble(String.format("%.2f",Math.random()));this.K = Double.parseDouble(String.format("%.2f",Math.random()));this.L = Double.parseDouble(String.format("%.2f",Math.random()));this.M = Double.parseDouble(String.format("%.2f",Math.random()));this.N = Double.parseDouble(String.format("%.2f",Math.random()));this.O = Double.parseDouble(String.format("%.2f",Math.random()));this.P = Double.parseDouble(String.format("%.2f",Math.random()));this.Q = Double.parseDouble(String.format("%.2f",Math.random()));this.R = Double.parseDouble(String.format("%.2f",Math.random()));
+        this.S = Double.parseDouble(String.format("%.2f",Math.random()));this.T = Double.parseDouble(String.format("%.2f",Math.random()));this.U = Double.parseDouble(String.format("%.2f",Math.random()));this.V = Double.parseDouble(String.format("%.2f",Math.random()));this.W = Double.parseDouble(String.format("%.2f",Math.random()));this.X = Double.parseDouble(String.format("%.2f",Math.random()));this.Y = Double.parseDouble(String.format("%.2f",Math.random()));this.Z = Double.parseDouble(String.format("%.2f",Math.random()));
+        this.TH = Double.parseDouble(String.format("%.2f",Math.random()));this.HE = Double.parseDouble(String.format("%.2f",Math.random()));this.IN = Double.parseDouble(String.format("%.2f",Math.random()));this.ER = Double.parseDouble(String.format("%.2f",Math.random()));this.AN = Double.parseDouble(String.format("%.2f",Math.random()));this.RE = Double.parseDouble(String.format("%.2f",Math.random()));this.ND = Double.parseDouble(String.format("%.2f",Math.random()));
+        this.AT = Double.parseDouble(String.format("%.2f",Math.random()));this.ON = Double.parseDouble(String.format("%.2f",Math.random()));this.NT = Double.parseDouble(String.format("%.2f",Math.random()));
+        this.modal1 = (int)(Double.parseDouble(String.format("%.3f",Math.random()))*100);
+        this.modal2 = (int)(Double.parseDouble(String.format("%.3f",Math.random()))*100);
+        this.featureClass = "Class "+String.valueOf((int)(Double.parseDouble(String.format("%.3f",Math.random()))*100));
+    }
     
     @Override
     public String toString(){
         String stringValue = String.format("%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f," +
                 "%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f, " +
-                        "%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f, %d,%d, %s",
+                        "%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%d,%d,%s",
                 A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,
                 TH,HE,IN,ER,AN,RE,ND,AT,ON,NT,
                 modal1,modal2,

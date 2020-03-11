@@ -17,17 +17,20 @@ import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Pelumi.Oyefeso on 02-Mar-2020
  */
 public class FileUtils {
-    private Path rootPath;
+    private Path rootPath, trainingFilePath;
     private String sharedFolderName = "keystroke-classifier-shared-folder";
     private String trainFileName = "keystroke-classifier-train.csv";
     private String sampleFileName = "sample.csv";
+    private boolean isTrainFileExists =  false;
     public FileUtils(){
         this.rootPath = Paths.get(System.getProperty("user.dir"));
+        this.isTrainFileExists = isTrainFileExists();
     }
     public void createSharedDirectory(){
         Path path = Paths.get(rootPath.toString() + File.separator + sharedFolderName);
@@ -60,9 +63,10 @@ public class FileUtils {
     }
 
     public boolean isTrainFileExists(){
-        Path trainingFilePath = Paths.get(rootPath.toString() + File.separator + sharedFolderName + File.separator +
+        Path trainingFile = Paths.get(rootPath.toString() + File.separator + sharedFolderName + File.separator +
                 trainFileName);
-        boolean trainingFileExists = Files.exists(trainingFilePath, new LinkOption[]{ LinkOption.NOFOLLOW_LINKS});
+        this.trainingFilePath = Paths.get(rootPath.toString() + File.separator + sharedFolderName);
+        boolean trainingFileExists = Files.exists(trainingFile, new LinkOption[]{ LinkOption.NOFOLLOW_LINKS});
         return trainingFileExists;
     }
 
@@ -102,8 +106,23 @@ public class FileUtils {
         writeContent(sample, Paths.get(path.toString()+File.separator + trainFileName));
     }
 
-    private KeyStrokeFeatureFile readFile(Path path) throws Exception{
-        String pathString = path.toString() + File.separator + trainFileName;
+    public void appendRandomTrainData() throws Exception{
+        KeyStrokeFeature keyStrokeFeature = new KeyStrokeFeature();
+        keyStrokeFeature.randomInitialization();
+        List<String[]> random = Utils.keyStrokeFeatureToList(keyStrokeFeature, KeyStrokeFileType.BODY);
+        List<KeyStrokeFeature> existingTrainingDataSet = readFileAsList(this.trainingFilePath);
+        List<String[]> existingTrainingDataSetStrings = new ArrayList<>();
+        existingTrainingDataSetStrings.add(KeyStrokeFeature.getKeyStrokeFeatureHeader().split(","));
+        for(KeyStrokeFeature holder : existingTrainingDataSet){
+            existingTrainingDataSetStrings.add(holder.toString().split(","));
+        }
+        existingTrainingDataSetStrings.addAll(random);
+        writeContent(existingTrainingDataSetStrings, Paths.get(this.trainingFilePath.toString()+ File.separator + trainFileName));
+
+    }
+
+    private KeyStrokeFeatureFile readFile(Path trainingFilePath) throws Exception{
+        String pathString = trainingFilePath.toString() + File.separator + trainFileName;
         //Prepare File for reading by removing trailing alterations that may exist in case file is edited.
         //prepareFileForReading(Paths.get(pathString));
         KeyStrokeFeatureFile keyStrokeFeatureFile = mapFileToKeyStrokeFeature(pathString);
@@ -116,10 +135,10 @@ public class FileUtils {
         return keyStrokeFeatureFile.getKeyStrokeFeatures();
     }
 
-    private void writeContent(List<String[]> fileArray, Path path) throws Exception {
-        System.out.println("Writing to path : "+path.toString());
+    private void writeContent(List<String[]> fileArray, Path trainingFIle) throws Exception {
+        System.out.println("Writing to path : "+trainingFIle.toString());
         //CSVWriter writer = new CSVWriter(new FileWriter(path.toString()));
-        Writer writer = Files.newBufferedWriter(path);
+        Writer writer = Files.newBufferedWriter(trainingFIle);
         ICSVWriter csvWriter = new CSVWriterBuilder(writer)
                 .withSeparator(CSVWriter.DEFAULT_SEPARATOR)
                 .withQuoteChar(CSVWriter.NO_QUOTE_CHARACTER)
