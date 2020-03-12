@@ -14,12 +14,14 @@ import java.util.List;
 public class HomeController {
     @FXML
     private Button dataCategoriesButton;
+    @FXML
+    private Button dataSizeButton;
     private FileUtils fileUtils;
     private KeyStrokeFeatureFile keyStrokeFeatureFile;
     private List<KeyStrokeFeature> keyStrokeFeatures;
 
     /**
-       The "initiliaze" method is automatically called because this class is annotated with the @FXML.
+       The "initialize" method is automatically called because this class is annotated with the @FXML.
      */
     public void initialize(){
         this.fileUtils = new FileUtils();
@@ -29,13 +31,21 @@ public class HomeController {
         else{
             this.keyStrokeFeatureFile = fileUtils.readTrainFile();
         }
+        setComponentValues();
         //TODO: CREATE EXCEPTION CLASS FOR HANDLING ERRORS.
+        /*
         try {
-            //fileUtils.appendRandomTrainData();
+            fileUtils.appendRandomTrainData();
         }
         catch(Exception e){
 
         }
+        */
+    }
+
+    private void setComponentValues(){
+        dataSizeButton.setText("DATA SIZE : " + this.keyStrokeFeatureFile.getDataSize());
+        dataCategoriesButton.setText("DATA CLASS SIZE : "+ this.keyStrokeFeatureFile.getDataCategoriesSize());
     }
 
     private boolean isTrainDataFileExists(){
