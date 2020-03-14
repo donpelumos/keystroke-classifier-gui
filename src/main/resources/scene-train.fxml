@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="1000.0"
+            style="-fx-max-width: 100%; -fx-max-height: 100%; -fx-background-color: #9b9b9b;"
+            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ie.ait.controllers.TrainController">
+   <children>
+      <TextArea fx:id="textArea" layoutX="47.0" layoutY="48.0" prefHeight="208.0" prefWidth="469.0" />
+   </children>
+</AnchorPane>
