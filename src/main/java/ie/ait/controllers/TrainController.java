@@ -2,6 +2,7 @@ package ie.ait.controllers;
 
 import ie.ait.models.classes.EnteredKey;
 import ie.ait.models.classes.KeyStrokeFeature;
+import ie.ait.utils.FileUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -26,6 +27,7 @@ public class TrainController {
     private Map<String, Double> keyPressedTotalDwellTime;
     private String [] alphabets = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S",
             "T","U","V", "W","X","Y","Z"};
+    private FileUtils fileUtils;
 
     /**
      The "initialize" method is automatically called because this class is annotated with the @FXML.
@@ -34,6 +36,7 @@ public class TrainController {
         fetchTextToType();
         initializeMaps();
         handleEvents();
+        this.fileUtils = new FileUtils();
     }
 
     private void setComponentValues(){
