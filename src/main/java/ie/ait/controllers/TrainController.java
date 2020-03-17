@@ -17,11 +17,10 @@ import java.util.*;
 public class TrainController {
     @FXML
     private TextArea textArea;
-    private boolean isTypingStarted = false;
     private boolean isTextCompleted = false;
-    private long startTime = 0l;
-    private List<EnteredKey> enteredKeys = new ArrayList<>();
     private String textToType = "";
+    private List<String> pressedKeysList = new ArrayList<>();
+    private List<String> releasedKeysList = new ArrayList<>();
     private KeyStrokeFeature extractedFeature;
     private Map<String, Double> keyPressedCount;
     private Map<String, Double> keyPressedTotalDwellTime;
@@ -41,24 +40,26 @@ public class TrainController {
     }
 
     private void handleEvents(){
-        textArea.setOnKeyTyped(new EventHandler<KeyEvent>() {
+        textArea.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
-                if(!isTextCompleted) {
-                    if (!isTypingStarted) {
-                        isTypingStarted = true;
-                        startTime = System.currentTimeMillis();
-                        System.out.println("START TIME : " + startTime);
-                    }
-                    String key = keyEvent.getCharacter().toUpperCase();
-                    long timeValue = System.currentTimeMillis();
-                    EnteredKey enteredKey = new EnteredKey(key, timeValue);
-                    enteredKeys.add(enteredKey);
-                    System.out.println("KEY TYPED : " + enteredKey);
+                if(!isTextCompleted){
+                    String keyPressed = keyEvent.getText().trim().toUpperCase();
+                    pressedKeysList.add(keyPressed+","+ System.currentTimeMillis());
+                }
+            }
+        });
+        textArea.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if(!isTextCompleted){
+                    String keyReleased = keyEvent.getText().trim().toUpperCase();
+                    releasedKeysList.add(keyReleased+","+ System.currentTimeMillis());
                     if (textArea.getText().toUpperCase().equals(textToType)) {
                         textArea.setEditable(false);
                         isTextCompleted = true;
-                        extractFeatureFromKeyEnteredKeys(enteredKeys);
+                        List<EnteredKey> enteredKeys = extractEnteredKeys(pressedKeysList, releasedKeysList);
+                        extractedFeature = extractFeatureFromKeyEnteredKeys(enteredKeys);
                     }
                 }
             }
@@ -69,19 +70,27 @@ public class TrainController {
         this.textToType = "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG.";
     }
 
-    private KeyStrokeFeature extractFeatureFromKeyEnteredKeys(List<EnteredKey> enteredKeys){
-        KeyStrokeFeature keyStrokeFeature = new KeyStrokeFeature();
-        enteredKeys = computeDwellTimes(enteredKeys);
-        keyStrokeFeature = mapDwellTimesToKeyStrokeFeature(enteredKeys);
-        //TODO: FINISH UP
-        return null;
-    }
-
-    private List<EnteredKey> computeDwellTimes(List<EnteredKey> enteredKeys){
-        for(int i=1; i < enteredKeys.size(); i++){
-            enteredKeys.get(i).setDwellTime(enteredKeys.get(i).getTimeValue()-enteredKeys.get(i-1).getTimeValue());
+    private List<EnteredKey> extractEnteredKeys(List<String> pressedKeysList, List<String> releasedKeysList){
+        List<EnteredKey> enteredKeys = new ArrayList<>();
+        for(int i=0; i< pressedKeysList.size(); i++){
+            EnteredKey enteredKey = new EnteredKey(pressedKeysList.get(i).split(",")[0].trim());
+            Long timePressed = Long.parseLong(pressedKeysList.get(i).split(",")[1].trim());
+            Long timeReleased = Long.parseLong(releasedKeysList.get(i).split(",")[1].trim());
+            Long dwellTime = Math.abs(timeReleased - timePressed);
+            enteredKey.setTimePressed(timePressed);
+            enteredKey.setTimeReleased(timeReleased);
+            enteredKey.setDwellTime(dwellTime);
+            enteredKeys.add(enteredKey);
         }
         return enteredKeys;
+    }
+
+    private KeyStrokeFeature extractFeatureFromKeyEnteredKeys(List<EnteredKey> enteredKeys){
+        KeyStrokeFeature keyStrokeFeature = new KeyStrokeFeature();
+        keyStrokeFeature = mapDwellTimesToKeyStrokeFeature(enteredKeys);
+        keyStrokeFeature = computeFlightTimes(enteredKeys, keyStrokeFeature);
+        //TODO: FINISH UP
+        return keyStrokeFeature;
     }
 
     private KeyStrokeFeature mapDwellTimesToKeyStrokeFeature(List<EnteredKey> enteredKeys){
@@ -102,6 +111,23 @@ public class TrainController {
                     statement.execute();
                 }
                 catch(Exception e){
+
+                }
+            }
+        }
+        return keyStrokeFeature;
+    }
+
+    private KeyStrokeFeature computeFlightTimes(List<EnteredKey> enteredKeys, KeyStrokeFeature keyStrokeFeature){
+        String [] digraphs = {"TH","HE","IN","ER","AN","RE","ND","AT","ON","NT"};
+        List<String> digraphList = Arrays.asList(digraphs);
+        for(String digraph : digraphList){
+            String firstLetter = digraph.substring(0,1);
+            String secondLetter = digraph.substring(1);
+            double digraphCounter = 0;
+            double totalDigraphFlightTimes = 0;
+            for(int i = 0; i < enteredKeys.size()-1; i++){
+                if(enteredKeys.get(i).getKey().equals(firstLetter) && enteredKeys.get(i+1).getKey().equals(secondLetter)){
 
                 }
             }

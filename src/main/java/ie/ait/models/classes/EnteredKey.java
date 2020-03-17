@@ -5,15 +5,15 @@ package ie.ait.models.classes;
  */
 public class EnteredKey {
     private String key;
-    private long timeValue;
+    private long timePressed;
+    private long timeReleased;
     /**
-     * The dwell time for a pressed key in milli-seconds.
+     * The dwell time it takes for a key to be pressed and released in milli-seconds.
      */
     private double dwellTime = 0;
 
-    public EnteredKey(String key, long timeValue) {
+    public EnteredKey(String key) {
         this.key = key;
-        this.timeValue = timeValue;
     }
 
     public String getKey() {
@@ -24,14 +24,6 @@ public class EnteredKey {
         this.key = key;
     }
 
-    public long getTimeValue() {
-        return timeValue;
-    }
-
-    public void setTimeValue(long timeValue) {
-        this.timeValue = timeValue;
-    }
-
     public void setDwellTime(double dwellTime){
         this.dwellTime = dwellTime;
     }
@@ -40,11 +32,29 @@ public class EnteredKey {
         return dwellTime;
     }
 
+    public long getTimePressed() {
+        return timePressed;
+    }
+
+    public void setTimePressed(long timePressed) {
+        this.timePressed = timePressed;
+    }
+
+    public long getTimeReleased() {
+        return timeReleased;
+    }
+
+    public void setTimeReleased(long timeReleased) {
+        this.timeReleased = timeReleased;
+    }
+
     @Override
     public String toString() {
         return "EnteredKey{" +
                 "key='" + key + '\'' +
-                ", timeValue=" + timeValue +
+                ", timePressed=" + timePressed +
+                ", timeReleased=" + timeReleased +
+                ", dwellTime=" + dwellTime +
                 '}';
     }
 }
