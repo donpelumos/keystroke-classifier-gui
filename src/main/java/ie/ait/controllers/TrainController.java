@@ -106,6 +106,7 @@ public class TrainController {
         for(String alphabet : alphabetList){
             if(keyPressedTotalDwellTime.get(alphabet) > 0 && keyPressedCount.get(alphabet) > 0){
                 double averageDwellTime = (keyPressedTotalDwellTime.get(alphabet)/keyPressedCount.get(alphabet))/1000;
+                averageDwellTime = Double.parseDouble(String.format("%.3f",averageDwellTime));
                 Statement statement = new Statement(keyStrokeFeature, "set"+alphabet, new Object[] { averageDwellTime });
                 try {
                     statement.execute();
@@ -126,13 +127,27 @@ public class TrainController {
             String secondLetter = digraph.substring(1);
             double digraphCounter = 0;
             double totalDigraphFlightTimes = 0;
+            double averageDigraphFlightTime = 0;
             for(int i = 0; i < enteredKeys.size()-1; i++){
                 if(enteredKeys.get(i).getKey().equals(firstLetter) && enteredKeys.get(i+1).getKey().equals(secondLetter)){
-
+                    digraphCounter = digraphCounter+1;
+                    totalDigraphFlightTimes = totalDigraphFlightTimes +
+                            Math.abs(enteredKeys.get(i+1).getTimePressed() - enteredKeys.get(i).getTimeReleased());
                 }
             }
+            if(digraphCounter >0 && totalDigraphFlightTimes > 0) {
+                averageDigraphFlightTime = (totalDigraphFlightTimes / digraphCounter)/1000;
+                averageDigraphFlightTime = Double.parseDouble(String.format("%.3f",averageDigraphFlightTime));
+            }
+            Statement statement = new Statement(keyStrokeFeature, "set"+digraph, new Object[] { averageDigraphFlightTime });
+            try {
+                statement.execute();
+            }
+            catch(Exception e){
+
+            }
         }
-        return null;
+        return keyStrokeFeature;
     }
 
     private void initializeMaps(){
