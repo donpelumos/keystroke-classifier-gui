@@ -6,6 +6,9 @@ package ie.ait.models.classes;
 public class EnteredKey {
     private String key;
     private long timeValue;
+    /**
+     * The dwell time for a pressed key in milli-seconds.
+     */
     private double dwellTime = 0;
 
     public EnteredKey(String key, long timeValue) {
