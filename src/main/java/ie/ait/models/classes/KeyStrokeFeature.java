@@ -1,10 +1,6 @@
 package ie.ait.models.classes;
 
-import com.opencsv.bean.AbstractBeanField;
 import com.opencsv.bean.CsvBindByName;
-import com.opencsv.bean.CsvCustomBindByName;
-import com.opencsv.exceptions.CsvConstraintViolationException;
-import com.opencsv.exceptions.CsvDataTypeMismatchException;
 
 /**
  * Created by Pelumi.Oyefeso on 02-Mar-2020
@@ -86,9 +82,9 @@ public class KeyStrokeFeature{
     private double NT;
 
     @CsvBindByName
-    private int modal1;
+    private double average1;
     @CsvBindByName
-    private int modal2;
+    private double average2;
 
     @CsvBindByName(column = "class")
     private String featureClass;
@@ -104,20 +100,20 @@ public class KeyStrokeFeature{
         this.featureClass = featureClass;
     }
 
-    public int getModal1() {
-        return modal1;
+    public double getAverage1() {
+        return average1;
     }
 
-    public void setModal1(int modal1) {
-        this.modal1 = modal1;
+    public void setAverage1(double average1) {
+        this.average1 = average1;
     }
 
-    public int getModal2() {
-        return modal2;
+    public double getAverage2() {
+        return average2;
     }
 
-    public void setModal2(int modal2) {
-        this.modal2 = modal2;
+    public void setAverage2(double average2) {
+        this.average2 = average2;
     }
 
     public double getTH() {
@@ -410,7 +406,7 @@ public class KeyStrokeFeature{
 
     public static String getKeyStrokeFeatureHeader(){
         String headerString = "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,TH,HE,IN,ER,AN,RE,ND,AT,ON,NT," +
-                "MODAL1,MODAL2,CLASS";
+                "AVERAGE1,AVERAGE2,CLASS";
         return headerString;
     }
 
@@ -420,7 +416,7 @@ public class KeyStrokeFeature{
         this.S = 0.1;this.T = 0.1;this.U = 0.1;this.V = 0.1;this.W = 0.1;this.X = 0.1;this.Y = 0.1;this.Z = 0.1;
         this.TH = 0.23;this.HE = 0.23;this.IN = 0.23;this.ER = 0.23;this.AN = 0.23;this.RE = 0.23;this.ND = 0.23;
         this.AT = 0.23;this.ON = 0.23;this.NT = 0.23;
-        this.modal1 = 5; this.modal2 = 6;
+        this.average1 = 5; this.average2 = 6;
         this.featureClass = "Class";
     }
 
@@ -430,19 +426,20 @@ public class KeyStrokeFeature{
         this.S = Double.parseDouble(String.format("%.2f",Math.random()));this.T = Double.parseDouble(String.format("%.2f",Math.random()));this.U = Double.parseDouble(String.format("%.2f",Math.random()));this.V = Double.parseDouble(String.format("%.2f",Math.random()));this.W = Double.parseDouble(String.format("%.2f",Math.random()));this.X = Double.parseDouble(String.format("%.2f",Math.random()));this.Y = Double.parseDouble(String.format("%.2f",Math.random()));this.Z = Double.parseDouble(String.format("%.2f",Math.random()));
         this.TH = Double.parseDouble(String.format("%.2f",Math.random()));this.HE = Double.parseDouble(String.format("%.2f",Math.random()));this.IN = Double.parseDouble(String.format("%.2f",Math.random()));this.ER = Double.parseDouble(String.format("%.2f",Math.random()));this.AN = Double.parseDouble(String.format("%.2f",Math.random()));this.RE = Double.parseDouble(String.format("%.2f",Math.random()));this.ND = Double.parseDouble(String.format("%.2f",Math.random()));
         this.AT = Double.parseDouble(String.format("%.2f",Math.random()));this.ON = Double.parseDouble(String.format("%.2f",Math.random()));this.NT = Double.parseDouble(String.format("%.2f",Math.random()));
-        this.modal1 = (int)(Double.parseDouble(String.format("%.3f",Math.random()))*100);
-        this.modal2 = (int)(Double.parseDouble(String.format("%.3f",Math.random()))*100);
+        //this.modal1 = (int)(Double.parseDouble(String.format("%.3f",Math.random()))*100);
+        this.average1 = Double.parseDouble(String.format("%.2f",Math.random()));
+        this.average2 = Double.parseDouble(String.format("%.2f",Math.random()));
         this.featureClass = "Class "+String.valueOf((int)(Double.parseDouble(String.format("%.3f",Math.random()))*100));
     }
     
     @Override
     public String toString(){
         String stringValue = String.format("%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f," +
-                "%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f, " +
-                        "%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%d,%d,%s",
+                "%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f," +
+                        "%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%s",
                 A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,
                 TH,HE,IN,ER,AN,RE,ND,AT,ON,NT,
-                modal1,modal2,
+                average1, average2,
                 featureClass);
         return stringValue;
     }

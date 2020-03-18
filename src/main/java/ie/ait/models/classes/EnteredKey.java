@@ -1,5 +1,7 @@
 package ie.ait.models.classes;
 
+import java.util.Arrays;
+
 /**
  * Created by Pelumi.Oyefeso on 14-Mar-2020
  */
@@ -46,6 +48,12 @@ public class EnteredKey {
 
     public void setTimeReleased(long timeReleased) {
         this.timeReleased = timeReleased;
+    }
+
+    public boolean isValidAlphabet(){
+        String [] alphabets = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S",
+                "T","U","V", "W","X","Y","Z"};
+        return Arrays.asList(alphabets).contains(this.getKey());
     }
 
     @Override

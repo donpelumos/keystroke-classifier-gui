@@ -92,6 +92,7 @@ public class TrainController {
         KeyStrokeFeature keyStrokeFeature = new KeyStrokeFeature();
         keyStrokeFeature = mapDwellTimesToKeyStrokeFeature(enteredKeys);
         keyStrokeFeature = computeFlightTimes(enteredKeys, keyStrokeFeature);
+        keyStrokeFeature = computeTimedModalValues(enteredKeys, keyStrokeFeature);
         //TODO: FINISH UP
         return keyStrokeFeature;
     }
@@ -151,6 +152,55 @@ public class TrainController {
             }
         }
         return keyStrokeFeature;
+    }
+
+    private KeyStrokeFeature computeTimedModalValues(List<EnteredKey> enteredKeys, KeyStrokeFeature keyStrokeFeature){
+        double averageLettersTypedPerSecond = averageNumberOfLetterInSpecifiedTimeRange(enteredKeys,1);
+        double averageLettersTypedPerTwoSeconds = averageNumberOfLetterInSpecifiedTimeRange(enteredKeys,2);
+        averageLettersTypedPerSecond = Double.parseDouble(String.format("%.3f",averageLettersTypedPerSecond));
+        averageLettersTypedPerTwoSeconds = Double.parseDouble(String.format("%.3f",averageLettersTypedPerTwoSeconds));
+        keyStrokeFeature.setAverage1(averageLettersTypedPerSecond);
+        keyStrokeFeature.setAverage2(averageLettersTypedPerTwoSeconds);
+        return keyStrokeFeature;
+    }
+
+    private double averageNumberOfLetterInSpecifiedTimeRange(List<EnteredKey> enteredKeys, int timeRange){
+        int timeRangeInMilliSeconds = timeRange * 1000;
+        long totalDurationInMilliSeconds = enteredKeys.get(enteredKeys.size()-1).getTimeReleased() - enteredKeys.get(0).getTimePressed();
+        int totalDurationInSeconds = (int)Math.ceil((double)(totalDurationInMilliSeconds)/1000);
+        int numberOfLettersTyped = 0;
+        int totalTimeRange = 0;
+        List<String> currentLettersTyped = new ArrayList<>();
+        List<Integer> numberOfLettersTypedPerRange = new ArrayList<>();
+        for(int i=0; i < enteredKeys.size()-1; i++){
+            int tempTotalTimeRange = totalTimeRange + (int)(enteredKeys.get(i+1).getTimePressed()-enteredKeys.get(i).getTimePressed());
+            if(tempTotalTimeRange < timeRangeInMilliSeconds){
+                if(enteredKeys.get(i).isValidAlphabet()){
+                    numberOfLettersTyped = numberOfLettersTyped + 1;
+                    currentLettersTyped.add(enteredKeys.get(i).getKey());
+                }
+                totalTimeRange = tempTotalTimeRange;
+            }
+            else{
+                if(numberOfLettersTyped > 0) {
+                    numberOfLettersTypedPerRange.add(numberOfLettersTyped);
+                }
+                if(enteredKeys.get(i).isValidAlphabet()) {
+                    numberOfLettersTyped = 1;
+                    currentLettersTyped.add(enteredKeys.get(i).getKey());
+                }
+                else{
+                    numberOfLettersTyped = 0;
+                }
+                totalTimeRange = tempTotalTimeRange - timeRangeInMilliSeconds;
+            }
+        }
+
+        double sum = 0;
+        for(int value : numberOfLettersTypedPerRange){
+            sum = sum + value;
+        }
+        return sum/numberOfLettersTypedPerRange.size();
     }
 
     private void initializeMaps(){
