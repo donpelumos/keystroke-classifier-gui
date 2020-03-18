@@ -113,7 +113,6 @@ public class FileUtils {
     }
 
     public void appendTrainData(KeyStrokeFeature keyStrokeFeature) throws Exception{
-        keyStrokeFeature.randomInitialization();
         List<String[]> random = Utils.keyStrokeFeatureToList(keyStrokeFeature, KeyStrokeFileType.BODY);
         List<KeyStrokeFeature> existingTrainingDataSet = readFileAsList(this.trainingFilePath);
         List<String[]> existingTrainingDataSetStrings = new ArrayList<>();

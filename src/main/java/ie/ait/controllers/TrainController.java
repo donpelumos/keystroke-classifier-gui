@@ -18,28 +18,39 @@ import java.util.*;
 public class TrainController {
     @FXML
     private TextArea textArea;
-    private boolean isTextCompleted = false;
+    private boolean isTextCompleted;
     private String textToType = "";
-    private List<String> pressedKeysList = new ArrayList<>();
-    private List<String> releasedKeysList = new ArrayList<>();
+    private List<String> pressedKeysList;
+    private List<String> releasedKeysList;
     private KeyStrokeFeature extractedFeature;
     private Map<String, Double> keyPressedCount;
     private Map<String, Double> keyPressedTotalDwellTime;
     private String [] alphabets = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S",
-            "T","U","V", "W","X","Y","Z"};
+            "T","U","V","W","X","Y","Z"};
     private FileUtils fileUtils;
 
     /**
      The "initialize" method is automatically called because this class is annotated with the @FXML.
      */
     public void initialize(){
+        initializeValues();
+        resetComponentValues();
         fetchTextToType();
         initializeMaps();
         handleEvents();
         this.fileUtils = new FileUtils();
     }
 
-    private void setComponentValues(){
+    private void initializeValues(){
+        isTextCompleted = false;
+        pressedKeysList = new ArrayList<>();
+        releasedKeysList = new ArrayList<>();
+    }
+
+    private void resetComponentValues(){
+        initializeValues();
+        textArea.setText("");
+        textArea.setEditable(true);
     }
 
     private void handleEvents(){
@@ -63,6 +74,13 @@ public class TrainController {
                         isTextCompleted = true;
                         List<EnteredKey> enteredKeys = extractEnteredKeys(pressedKeysList, releasedKeysList);
                         extractedFeature = extractFeatureFromKeyEnteredKeys(enteredKeys);
+                        try {
+                            fileUtils.appendTrainData(extractedFeature);
+                        }
+                        catch(Exception e){
+
+                        }
+                        resetComponentValues();
                     }
                 }
             }
@@ -89,11 +107,11 @@ public class TrainController {
     }
 
     private KeyStrokeFeature extractFeatureFromKeyEnteredKeys(List<EnteredKey> enteredKeys){
-        KeyStrokeFeature keyStrokeFeature = new KeyStrokeFeature();
-        keyStrokeFeature = mapDwellTimesToKeyStrokeFeature(enteredKeys);
+        KeyStrokeFeature keyStrokeFeature = mapDwellTimesToKeyStrokeFeature(enteredKeys);
         keyStrokeFeature = computeFlightTimes(enteredKeys, keyStrokeFeature);
-        keyStrokeFeature = computeTimedModalValues(enteredKeys, keyStrokeFeature);
-        //TODO: FINISH UP
+        keyStrokeFeature = computeTimedAverageValues(enteredKeys, keyStrokeFeature);
+        //TODO: TO BE REMOVED AND REPLACED WITH IDEAL CLASSES
+        keyStrokeFeature.setFeatureClass("Busayo");
         return keyStrokeFeature;
     }
 
@@ -154,7 +172,7 @@ public class TrainController {
         return keyStrokeFeature;
     }
 
-    private KeyStrokeFeature computeTimedModalValues(List<EnteredKey> enteredKeys, KeyStrokeFeature keyStrokeFeature){
+    private KeyStrokeFeature computeTimedAverageValues(List<EnteredKey> enteredKeys, KeyStrokeFeature keyStrokeFeature){
         double averageLettersTypedPerSecond = averageNumberOfLetterInSpecifiedTimeRange(enteredKeys,1);
         double averageLettersTypedPerTwoSeconds = averageNumberOfLetterInSpecifiedTimeRange(enteredKeys,2);
         averageLettersTypedPerSecond = Double.parseDouble(String.format("%.3f",averageLettersTypedPerSecond));
