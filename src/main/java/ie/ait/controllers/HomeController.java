@@ -44,8 +44,10 @@ public class HomeController {
     }
 
     private void setComponentValues(){
-        dataSizeButton.setText("DATA SIZE : " + this.keyStrokeFeatureFile.getDataSize());
-        dataCategoriesButton.setText("DATA CLASS SIZE : "+ this.keyStrokeFeatureFile.getDataCategoriesSize());
+        if(this.keyStrokeFeatureFile != null) {
+            dataSizeButton.setText("DATA SIZE : " + this.keyStrokeFeatureFile.getDataSize());
+            dataCategoriesButton.setText("DATA CLASS SIZE : " + this.keyStrokeFeatureFile.getDataCategoriesSize());
+        }
     }
 
     private boolean isTrainDataFileExists(){
