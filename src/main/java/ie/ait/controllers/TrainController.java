@@ -3,6 +3,7 @@ package ie.ait.controllers;
 import ie.ait.models.classes.EnteredKey;
 import ie.ait.models.classes.KeyStrokeFeature;
 import ie.ait.utils.FileUtils;
+import ie.ait.utils.Utils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -58,6 +59,7 @@ public class TrainController {
             @Override
             public void handle(KeyEvent keyEvent) {
                 if(!isTextCompleted){
+                    //Utils.showAlert("TITLE","SAMPLE HEADER","Message Body");
                     String keyPressed = keyEvent.getText().trim().toUpperCase();
                     pressedKeysList.add(keyPressed+","+ System.currentTimeMillis());
                 }
@@ -88,7 +90,7 @@ public class TrainController {
     }
 
     private void fetchTextToType(){
-        this.textToType = "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG.";
+        this.textToType = "THE SHORT HAIRED QUICK BROWN FOX COMES OUT OF IT'S CAGE AS IT JUMPS OVER THE LAZY DOG WHO LIES IN THE GRASS ASLEEP. I HOPE THIS TEST IS ABLE TO COVER ALL THAT NEEDS TO BE COVERED IN KEYSTROKE TESTING.";
     }
 
     private List<EnteredKey> extractEnteredKeys(List<String> pressedKeysList, List<String> releasedKeysList){
@@ -111,7 +113,7 @@ public class TrainController {
         keyStrokeFeature = computeFlightTimes(enteredKeys, keyStrokeFeature);
         keyStrokeFeature = computeTimedAverageValues(enteredKeys, keyStrokeFeature);
         //TODO: TO BE REMOVED AND REPLACED WITH IDEAL CLASSES
-        keyStrokeFeature.setFeatureClass("Busayo");
+        keyStrokeFeature.setFeatureClass("Frank");
         return keyStrokeFeature;
     }
 
