@@ -32,9 +32,10 @@ public class Utils {
         return featureList;
     }
 
-    public static void showAlert(String title, String header, String message){
+    public static void showAlert(String title, String headerTitle, String headerDescription, String message){
         AlertController alertController = new AlertController();
-        alertController.display(title,header,message);
+        headerTitle += " : ";
+        alertController.display(title,headerTitle, headerDescription,message);
     }
 
 }

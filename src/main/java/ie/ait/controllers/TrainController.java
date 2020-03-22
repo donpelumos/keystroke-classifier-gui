@@ -11,6 +11,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
 
 import java.beans.Statement;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -59,7 +60,12 @@ public class TrainController {
             @Override
             public void handle(KeyEvent keyEvent) {
                 if(!isTextCompleted){
-                    //Utils.showAlert("TITLE","SAMPLE HEADER","Message Body");
+                    Exception sampleException = new IOException();
+                    String stackTraceString = "";
+                    StringBuilder sb = new StringBuilder();
+                    Arrays.stream(sampleException.getStackTrace()).forEach((s) -> sb.append(s.toString()+"\r\n"));
+                    Utils.showAlert(sampleException.getClass().toString(),
+                            "HEADER", sampleException.getMessage(),sb.toString());
                     String keyPressed = keyEvent.getText().trim().toUpperCase();
                     pressedKeysList.add(keyPressed+","+ System.currentTimeMillis());
                 }
@@ -113,7 +119,7 @@ public class TrainController {
         keyStrokeFeature = computeFlightTimes(enteredKeys, keyStrokeFeature);
         keyStrokeFeature = computeTimedAverageValues(enteredKeys, keyStrokeFeature);
         //TODO: TO BE REMOVED AND REPLACED WITH IDEAL CLASSES
-        keyStrokeFeature.setFeatureClass("Frank");
+        keyStrokeFeature.setFeatureClass("Pelumi");
         return keyStrokeFeature;
     }
 
