@@ -7,12 +7,11 @@ import ie.ait.utils.FileUtils;
 import ie.ait.utils.Utils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 
 import java.beans.Statement;
 import java.io.IOException;
@@ -25,11 +24,25 @@ public class TrainController {
     @FXML
     private TextArea textArea;
     @FXML
+    private TextArea sourceTextArea;
+    @FXML
     private RadioButton newUserRadioButton;
     @FXML
     private RadioButton existingUserRadioButton;
     @FXML
-    private AnchorPane anchorPane1;
+    private Label existingUserLabel;
+    @FXML
+    private TextField newUserTextField;
+    @FXML
+    private ComboBox<String> existingUsersComboBox;
+    @FXML
+    private Button continueButton;
+    @FXML
+    private Label trainedUsernameLabel;
+    @FXML
+    private HBox newUserHBox;
+    @FXML
+    private HBox existingUserHBox;
     private boolean isTextCompleted;
     private String textToType = "";
     private List<String> pressedKeysList;
@@ -65,6 +78,11 @@ public class TrainController {
         textArea.setWrapText(true);
         pressedKeysList = new ArrayList<>();
         releasedKeysList = new ArrayList<>();
+        existingUserHBox.setVisible(false);
+        newUserHBox.setVisible(true);
+        continueButton.setDisable(true);
+        existingUserLabel.setVisible(false);
+        textArea.setDisable(true);
     }
 
     private void resetComponentValues(){
@@ -132,7 +150,7 @@ public class TrainController {
                 existingUserRadioButtonClicked = true;
                 newUserRadioButtonClicked = false;
                 selectedUser = SelectedUser.EXISTING_USER;
-                //toggleRadioButtons();
+                toggleRadioButtons();
             }
         });
     }
@@ -286,12 +304,20 @@ public class TrainController {
             newUserRadioButton.setSelected(true);
             existingUserRadioButton.setDisable(false);
             existingUserRadioButton.setSelected(false);
+            existingUserHBox.setVisible(false);
+            newUserHBox.setVisible(true);
+            newUserTextField.setPromptText("Enter Username (Letters Only)");
+            existingUserLabel.setVisible(false);
+            continueButton.setDisable(true);
         }
         else{
             newUserRadioButton.setDisable(false);
             newUserRadioButton.setSelected(false);
             existingUserRadioButton.setDisable(true);
             existingUserRadioButton.setSelected(true);
+            existingUserHBox.setVisible(true);
+            newUserHBox.setVisible(false);
+            continueButton.setDisable(true);
         }
     }
 }

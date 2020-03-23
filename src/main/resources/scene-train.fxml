@@ -39,7 +39,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="existingUsersComboBox" prefHeight="51.0" prefWidth="283.0" promptText="--Esisting Users--" style="-fx-font-size: 18px;" />
+                  <ComboBox fx:id="existingUsersComboBox" prefHeight="51.0" prefWidth="283.0" promptText="--Existing Users--" style="-fx-font-size: 18px;" />
                </children>
             </HBox>
             <HBox fx:id="newUserHBox" alignment="CENTER" layoutX="350.0" layoutY="159.0" prefHeight="70.0" prefWidth="200.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="108.0">
@@ -54,11 +54,6 @@
                         <Font size="20.0" />
                      </font>
                   </TextField>
-                  <Label text="***Username exists" textFill="RED">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
                </children>
             </HBox>
             <Button id="continueButton" fx:id="continueButton" layoutX="374.0" layoutY="183.0" mnemonicParsing="false" text="CONTINUE" AnchorPane.topAnchor="175.0">
@@ -66,6 +61,11 @@
                   <Font size="20.0" />
                </font>
             </Button>
+            <Label fx:id="existingUserLabel" layoutX="394.0" layoutY="166.0" text="***Username exists" textFill="RED">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <TextArea id="sourceTextArea" fx:id="sourceTextArea" disable="true" layoutX="47.0" layoutY="317.0" prefHeight="270.0" prefWidth="485.0" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" />
@@ -74,7 +74,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="666.0" layoutY="235.0" text="TEXT TRAINING FOR : ">
+      <Label fx:id="trainedUsernameLabel" layoutX="666.0" layoutY="235.0" text="TEXT TRAINING FOR : ">
          <font>
             <Font size="18.0" />
          </font>
