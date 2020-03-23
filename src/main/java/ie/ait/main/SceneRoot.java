@@ -35,7 +35,7 @@ public class SceneRoot extends Application {
         //Parent trainRoot = FXMLLoader.load(getClass().getClassLoader().getResource("scene-train.fxml"));
 
         primaryStage.setTitle("Keystroke Classifier");
-        primaryStage.setScene(new Scene(root, 1000, 600));
+        primaryStage.setScene(new Scene(root, 1000, 550));
 
         TabPane tabPane = new TabPane();
         Pane homePane = new Pane(homeRoot);

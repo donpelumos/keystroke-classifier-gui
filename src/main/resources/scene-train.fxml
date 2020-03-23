@@ -6,11 +6,29 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="1000.0"
-            style="-fx-max-width: 100%; -fx-max-height: 100%; -fx-background-color: #9b9b9b;"
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="550.0" minWidth="1000.0"
+            style="-fx-min-width: 1000; -fx-min-height: 550; -fx-background-color: #dbdbdb;"
             xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="ie.ait.controllers.TrainController">
    <children>
-      <TextArea fx:id="textArea" layoutX="47.0" layoutY="48.0" prefHeight="208.0" prefWidth="469.0" />
+      <TextArea id="textArea" fx:id="textArea" layoutX="274.0" layoutY="332.0" prefHeight="208.0" prefWidth="469.0" />
+      <AnchorPane fx:id="anchorPane1" layoutX="46.0" layoutY="39.0" prefHeight="200.0" prefWidth="900.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="10.0">
+         <children>
+            <HBox alignment="CENTER" layoutX="247.0" layoutY="84.0" prefHeight="100.0" prefWidth="200.0" spacing="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <RadioButton id="newUserRadioButton" fx:id="newUserRadioButton" mnemonicParsing="false" text="New User">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </RadioButton>
+                  <RadioButton id="existingUserRadioButton" fx:id="existingUserRadioButton" mnemonicParsing="false" text="Existing User">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </RadioButton>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

@@ -1,14 +1,18 @@
 package ie.ait.controllers;
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import ie.ait.models.classes.EnteredKey;
 import ie.ait.models.classes.KeyStrokeFeature;
+import ie.ait.models.enums.SelectedUser;
 import ie.ait.utils.FileUtils;
 import ie.ait.utils.Utils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 
 import java.beans.Statement;
 import java.io.IOException;
@@ -20,6 +24,10 @@ import java.util.*;
 public class TrainController {
     @FXML
     private TextArea textArea;
+    @FXML
+    private RadioButton newUserRadioButton;
+    @FXML
+    private RadioButton existingUserRadioButton;
     private boolean isTextCompleted;
     private String textToType = "";
     private List<String> pressedKeysList;
@@ -30,6 +38,9 @@ public class TrainController {
     private String [] alphabets = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S",
             "T","U","V","W","X","Y","Z"};
     private FileUtils fileUtils;
+    private boolean newUserRadioButtonClicked = true;
+     private boolean existingUserRadioButtonClicked = false;
+     private SelectedUser selectedUser = SelectedUser.NEW_USER;
 
     /**
      The "initialize" method is automatically called because this class is annotated with the @FXML.
@@ -45,6 +56,11 @@ public class TrainController {
 
     private void initializeValues(){
         isTextCompleted = false;
+        newUserRadioButton.setSelected(true);
+        newUserRadioButton.setDisable(true);
+        existingUserRadioButton.setSelected(false);
+        existingUserRadioButton.setDisable(false);
+        textArea.setWrapText(true);
         pressedKeysList = new ArrayList<>();
         releasedKeysList = new ArrayList<>();
     }
@@ -88,6 +104,25 @@ public class TrainController {
                         resetComponentValues();
                     }
                 }
+            }
+        });
+
+        newUserRadioButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                newUserRadioButtonClicked = true;
+                existingUserRadioButtonClicked = false;
+                selectedUser = SelectedUser.NEW_USER;
+                toggleRadioButtons();
+            }
+        });
+        existingUserRadioButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                existingUserRadioButtonClicked = true;
+                newUserRadioButtonClicked = false;
+                selectedUser = SelectedUser.EXISTING_USER;
+                toggleRadioButtons();
             }
         });
     }
@@ -232,6 +267,21 @@ public class TrainController {
         for(String alphabet : alphabets){
             keyPressedCount.put(alphabet,(double)0);
             keyPressedTotalDwellTime.put(alphabet, (double)0);
+        }
+    }
+
+    private void toggleRadioButtons(){
+        if(newUserRadioButtonClicked) {
+            newUserRadioButton.setDisable(true);
+            newUserRadioButton.setSelected(true);
+            existingUserRadioButton.setDisable(false);
+            existingUserRadioButton.setSelected(false);
+        }
+        else{
+            newUserRadioButton.setDisable(false);
+            newUserRadioButton.setSelected(false);
+            existingUserRadioButton.setDisable(true);
+            existingUserRadioButton.setSelected(true);
         }
     }
 }

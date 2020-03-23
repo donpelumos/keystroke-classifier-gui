@@ -7,12 +7,12 @@
 <?import javafx.scene.layout.*?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="1000.0"
-            style="-fx-max-width: 100%; -fx-max-height: 100%; -fx-background-color: #aa1212;"
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="550.0" minWidth="1000.0"
+            style="-fx-min-width: 1000; -fx-min-height: 550; -fx-background-color: #dbdbdb;"
             xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="ie.ait.controllers.HomeController">
    <children>
-      <HBox layoutX="106.0" layoutY="135.0" minWidth="800.0" prefHeight="100.0" prefWidth="800.0" style="-fx-padding: 10;">
+      <HBox layoutX="146.0" layoutY="225.0">
          <children>
             <Button fx:id="dataCategoriesButton" mnemonicParsing="false" text="0 DATA CATEGORIES" HBox.hgrow="ALWAYS">
                <font>
