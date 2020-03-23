@@ -1,6 +1,5 @@
 package ie.ait.controllers;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import ie.ait.models.classes.EnteredKey;
 import ie.ait.models.classes.KeyStrokeFeature;
 import ie.ait.models.enums.SelectedUser;
@@ -13,6 +12,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 
 import java.beans.Statement;
 import java.io.IOException;
@@ -28,6 +28,8 @@ public class TrainController {
     private RadioButton newUserRadioButton;
     @FXML
     private RadioButton existingUserRadioButton;
+    @FXML
+    private AnchorPane anchorPane1;
     private boolean isTextCompleted;
     private String textToType = "";
     private List<String> pressedKeysList;
@@ -81,6 +83,8 @@ public class TrainController {
                     //Utils.logException(TrainController.class, sampleException);
                     String keyPressed = keyEvent.getText().trim().toUpperCase();
                     pressedKeysList.add(keyPressed+","+ System.currentTimeMillis());
+                    //anchorPane1.setVisible(true);
+                    //textArea.setLayoutY(332);
                 }
             }
         });
@@ -114,6 +118,12 @@ public class TrainController {
                 existingUserRadioButtonClicked = false;
                 selectedUser = SelectedUser.NEW_USER;
                 toggleRadioButtons();
+                /*
+                anchorPane1.managedProperty().bind(anchorPane1.visibleProperty());
+                anchorPane1.setVisible(false);
+                textArea.setLayoutY(39);
+
+                 */
             }
         });
         existingUserRadioButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -122,7 +132,7 @@ public class TrainController {
                 existingUserRadioButtonClicked = true;
                 newUserRadioButtonClicked = false;
                 selectedUser = SelectedUser.EXISTING_USER;
-                toggleRadioButtons();
+                //toggleRadioButtons();
             }
         });
     }
