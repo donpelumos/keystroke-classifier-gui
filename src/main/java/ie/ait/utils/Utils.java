@@ -9,8 +9,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -30,6 +35,19 @@ public class Utils {
             featureList.add(keyStrokeFeature.toString().split(","));
         }
         return featureList;
+    }
+
+    public static void logException(Class className, Exception exception){
+        Logger LOGGER = LoggerFactory.getLogger(className.toString());
+        LOGGER.info(className.toString(),exception);
+    }
+
+    public static void showAlert(Exception exception){
+        StringBuilder sb = new StringBuilder();
+        Arrays.stream(exception.getStackTrace()).forEach((s) -> sb.append(s.toString()+"\r\n"));
+        Utils.showAlert(exception.getClass().toString().replace("class","").trim(),
+                exception.getClass().toString().replace("class","").trim(),
+                exception.getMessage(), sb.toString());
     }
 
     public static void showAlert(String title, String headerTitle, String headerDescription, String message){

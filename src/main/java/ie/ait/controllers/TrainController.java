@@ -60,12 +60,9 @@ public class TrainController {
             @Override
             public void handle(KeyEvent keyEvent) {
                 if(!isTextCompleted){
-                    Exception sampleException = new IOException();
-                    String stackTraceString = "";
-                    StringBuilder sb = new StringBuilder();
-                    Arrays.stream(sampleException.getStackTrace()).forEach((s) -> sb.append(s.toString()+"\r\n"));
-                    Utils.showAlert(sampleException.getClass().toString(),
-                            "HEADER", sampleException.getMessage(),sb.toString());
+                    //Exception sampleException = new IOException();
+                    //Utils.showAlert(sampleException);
+                    //Utils.logException(TrainController.class, sampleException);
                     String keyPressed = keyEvent.getText().trim().toUpperCase();
                     pressedKeysList.add(keyPressed+","+ System.currentTimeMillis());
                 }
