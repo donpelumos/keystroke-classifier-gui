@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="1000.0" style="-fx-min-width: 1000; -fx-min-height: 550; -fx-background-color: #dbdbdb;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="13.0" layoutY="18.0" text="PYTHON FOLDER URL : ">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <TextField fx:id="textView" layoutX="232.0" layoutY="15.0" prefHeight="37.0" prefWidth="645.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </TextField>
+      <Button fx:id="editButton" layoutX="376.0" layoutY="85.0" mnemonicParsing="false" text="EDIT">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+      <Button fx:id="saveButton" layoutX="509.0" layoutY="85.0" mnemonicParsing="false" text="SAVE">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
