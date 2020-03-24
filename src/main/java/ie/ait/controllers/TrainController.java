@@ -2,9 +2,11 @@ package ie.ait.controllers;
 
 import ie.ait.models.classes.EnteredKey;
 import ie.ait.models.classes.KeyStrokeFeature;
+import ie.ait.models.enums.AlertType;
 import ie.ait.models.enums.SelectedUser;
 import ie.ait.utils.FileUtils;
 import ie.ait.utils.Utils;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -56,6 +58,7 @@ public class TrainController {
     private boolean newUserRadioButtonClicked = true;
      private boolean existingUserRadioButtonClicked = false;
      private SelectedUser selectedUser = SelectedUser.NEW_USER;
+     private Set<String> trainedUsers;
 
     /**
      The "initialize" method is automatically called because this class is annotated with the @FXML.
@@ -67,6 +70,9 @@ public class TrainController {
         initializeMaps();
         handleEvents();
         this.fileUtils = new FileUtils();
+        //Exception sampleException = new IOException();
+        //Utils.showAlert(sampleException, AlertType.ERROR);
+        //Utils.logException(TrainController.class, sampleException);
     }
 
     private void initializeValues(){
@@ -83,10 +89,17 @@ public class TrainController {
         continueButton.setDisable(true);
         existingUserLabel.setVisible(false);
         textArea.setDisable(true);
+        trainedUsers = getTrainedUsers();
+        //existingUsersComboBox.getItems().add("User");
+        if(existingUsersComboBox.getItems().size() == 0) {
+            for (String user : trainedUsers) {
+                existingUsersComboBox.getItems().add(user);
+            }
+        }
     }
 
     private void resetComponentValues(){
-        initializeValues();
+        //initializeValues();
         textArea.setText("");
         textArea.setEditable(true);
     }
@@ -96,9 +109,6 @@ public class TrainController {
             @Override
             public void handle(KeyEvent keyEvent) {
                 if(!isTextCompleted){
-                    //Exception sampleException = new IOException();
-                    //Utils.showAlert(sampleException);
-                    //Utils.logException(TrainController.class, sampleException);
                     String keyPressed = keyEvent.getText().trim().toUpperCase();
                     pressedKeysList.add(keyPressed+","+ System.currentTimeMillis());
                     //anchorPane1.setVisible(true);
@@ -319,5 +329,15 @@ public class TrainController {
             newUserHBox.setVisible(false);
             continueButton.setDisable(true);
         }
+    }
+
+    private Set<String> getTrainedUsers(){
+        Set<String> trainedUsers = new HashSet<>();
+        trainedUsers.add("John");
+        trainedUsers.add("Derrick");
+        trainedUsers.add("James");
+        trainedUsers.add("Paul");
+        trainedUsers.add("Peterside");
+        return trainedUsers;
     }
 }

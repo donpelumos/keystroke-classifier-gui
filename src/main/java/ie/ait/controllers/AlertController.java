@@ -1,5 +1,6 @@
 package ie.ait.controllers;
 
+import ie.ait.models.enums.AlertType;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -17,6 +18,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.awt.Toolkit;
+import java.util.Optional;
 
 
 /**
@@ -25,7 +27,7 @@ import java.awt.Toolkit;
 public class AlertController {
     private int ALERT_WIDTH = 750;
     private int ALERT_HEIGHT = 300;
-    public void display(String title, String headerText, String headerDescription, String message){
+    public void display(String title, String headerText, String headerDescription, String message, AlertType... alertType){
         Stage window = new Stage();
 
         window.initModality(Modality.APPLICATION_MODAL);
@@ -65,7 +67,21 @@ public class AlertController {
 
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(0,20,0,20));
-        layout.getChildren().addAll(headerLayout, alertBodyTextArea);
+        if(alertType.length > 0) {
+            if(alertType[0] == AlertType.ERROR) {
+                layout.getChildren().addAll(headerLayout, alertBodyTextArea);
+            }
+            else{
+                layout.getChildren().addAll(headerLayout);
+                ALERT_HEIGHT = 100;
+                window.setMinHeight(ALERT_HEIGHT);
+            }
+        }
+        else{
+            layout.getChildren().addAll(headerLayout);
+            ALERT_HEIGHT = 100;
+            window.setMinHeight(ALERT_HEIGHT);
+        }
         layout.setAlignment(Pos.TOP_CENTER);
 
         Scene scene = new Scene(layout);
