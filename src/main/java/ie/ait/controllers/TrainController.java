@@ -443,5 +443,9 @@ public class TrainController {
             */
         }
         this.trainedUsers = trainedUsers;
+        existingUsersComboBox.getItems().clear();
+        for (String user : this.trainedUsers) {
+            existingUsersComboBox.getItems().add(user);
+        }
     }
 }
