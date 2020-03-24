@@ -2,6 +2,7 @@ package ie.ait.controllers;
 
 import ie.ait.models.classes.EnteredKey;
 import ie.ait.models.classes.KeyStrokeFeature;
+import ie.ait.models.classes.KeyStrokeFeatureFile;
 import ie.ait.models.enums.AlertType;
 import ie.ait.models.enums.SelectedUser;
 import ie.ait.utils.FileUtils;
@@ -56,20 +57,22 @@ public class TrainController {
             "T","U","V","W","X","Y","Z"};
     private FileUtils fileUtils;
     private boolean newUserRadioButtonClicked = true;
-     private boolean existingUserRadioButtonClicked = false;
-     private SelectedUser selectedUser = SelectedUser.NEW_USER;
-     private Set<String> trainedUsers;
+    private boolean existingUserRadioButtonClicked = false;
+    private SelectedUser selectedUser = SelectedUser.NEW_USER;
+    private Set<String> trainedUsers;
+    private KeyStrokeFeatureFile keyStrokeFeatureFile;
 
     /**
      The "initialize" method is automatically called because this class is annotated with the @FXML.
      */
     public void initialize(){
+        this.fileUtils = new FileUtils();
+        this.keyStrokeFeatureFile = fileUtils.readTrainFile();
         initializeValues();
         resetComponentValues();
         fetchTextToType();
         initializeMaps();
         handleEvents();
-        this.fileUtils = new FileUtils();
         //Exception sampleException = new IOException();
         //Utils.showAlert(sampleException, AlertType.ERROR);
         //Utils.logException(TrainController.class, sampleException);
@@ -332,12 +335,18 @@ public class TrainController {
     }
 
     private Set<String> getTrainedUsers(){
+        List<KeyStrokeFeature> keyStrokeFeatures = keyStrokeFeatureFile.getKeyStrokeFeatures();
         Set<String> trainedUsers = new HashSet<>();
-        trainedUsers.add("John");
-        trainedUsers.add("Derrick");
-        trainedUsers.add("James");
-        trainedUsers.add("Paul");
-        trainedUsers.add("Peterside");
+        for(KeyStrokeFeature keyStrokeFeature : keyStrokeFeatures) {
+            trainedUsers.add(keyStrokeFeature.getFeatureClass());
+            /*
+            trainedUsers.add("John");
+            trainedUsers.add("Derrick");
+            trainedUsers.add("James");
+            trainedUsers.add("Paul");
+            trainedUsers.add("Peterside");
+            */
+        }
         return trainedUsers;
     }
 }
