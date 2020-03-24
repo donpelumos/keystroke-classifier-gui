@@ -20,6 +20,7 @@ import javafx.scene.layout.HBox;
 import java.beans.Statement;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import static ie.ait.utils.Utils.toSentenceCase;
@@ -76,13 +77,9 @@ public class TrainController {
         this.fileUtils = new FileUtils();
         this.keyStrokeFeatureFile = fileUtils.readTrainFile();
         initializeValues();
-        //resetComponentValues();
         fetchTextToType();
         initializeMaps();
         handleEvents();
-        //Exception sampleException = new IOException();
-        //Utils.showAlert(sampleException, AlertType.ERROR);
-        //Utils.logException(TrainController.class, sampleException);
     }
 
     private void initializeValues(){
@@ -103,8 +100,7 @@ public class TrainController {
         textArea.setDisable(true);
         sourceTextArea.setDisable(false);
         sourceTextArea.setEditable(false);
-        trainedUsers = getTrainedUsers();
-        //existingUsersComboBox.getItems().add("User");
+        getTrainedUsers();
         if(existingUsersComboBox.getItems().size() == 0) {
             for (String user : trainedUsers) {
                 existingUsersComboBox.getItems().add(user);
@@ -118,6 +114,9 @@ public class TrainController {
         textArea.setText("");
         textArea.setEditable(true);
         fetchTextToType();
+        initializeMaps();
+        pressedKeysList = new ArrayList<>();
+        releasedKeysList = new ArrayList<>();
     }
 
     private void handleEvents(){
@@ -127,8 +126,6 @@ public class TrainController {
                 if(!isTextCompleted){
                     String keyPressed = keyEvent.getText().trim().toUpperCase();
                     pressedKeysList.add(keyPressed+","+ System.currentTimeMillis());
-                    //anchorPane1.setVisible(true);
-                    //textArea.setLayoutY(332);
                 }
             }
         });
@@ -142,12 +139,19 @@ public class TrainController {
                         textArea.setEditable(false);
                         isTextCompleted = true;
                         List<EnteredKey> enteredKeys = extractEnteredKeys(pressedKeysList, releasedKeysList);
-                        extractedFeature = extractFeatureFromKeyEnteredKeys(enteredKeys);
                         try {
-                            fileUtils.appendTrainData(extractedFeature);
+                            extractedFeature = extractFeatureFromKeyEnteredKeys(enteredKeys);
+                            if(extractedFeature.isValid()){
+                                fileUtils.appendTrainData(extractedFeature);
+                            }
+                            else{
+                                Exception invalidExtractedFeatureException = new Exception("Extracted Feature Is Not Valid");
+                                throw invalidExtractedFeatureException;
+                            }
                         }
                         catch(Exception e){
-
+                            initializeMaps();
+                            Utils.showAlert(e, AlertType.ERROR);
                         }
                         resetComponentValues();
                     }
@@ -175,6 +179,7 @@ public class TrainController {
                 toggleRadioButtons();
                 resetButtonActions();
                 existingUsersComboBox.setValue("--Existing Users--");
+                getTrainedUsers();
             }
         });
 
@@ -258,14 +263,20 @@ public class TrainController {
     private List<EnteredKey> extractEnteredKeys(List<String> pressedKeysList, List<String> releasedKeysList){
         List<EnteredKey> enteredKeys = new ArrayList<>();
         for(int i=0; i< pressedKeysList.size(); i++){
-            EnteredKey enteredKey = new EnteredKey(pressedKeysList.get(i).split(",")[0].trim());
-            Long timePressed = Long.parseLong(pressedKeysList.get(i).split(",")[1].trim());
-            Long timeReleased = Long.parseLong(releasedKeysList.get(i).split(",")[1].trim());
-            Long dwellTime = Math.abs(timeReleased - timePressed);
-            enteredKey.setTimePressed(timePressed);
-            enteredKey.setTimeReleased(timeReleased);
-            enteredKey.setDwellTime(dwellTime);
-            enteredKeys.add(enteredKey);
+            try {
+                EnteredKey enteredKey = new EnteredKey(pressedKeysList.get(i).split(",")[0].trim());
+                Long timePressed = Long.parseLong(pressedKeysList.get(i).split(",")[1].trim());
+                Long timeReleased = Long.parseLong(releasedKeysList.get(i).split(",")[1].trim());
+                Long dwellTime = Math.abs(timeReleased - timePressed);
+                enteredKey.setTimePressed(timePressed);
+                enteredKey.setTimeReleased(timeReleased);
+                enteredKey.setDwellTime(dwellTime);
+                enteredKeys.add(enteredKey);
+            }
+            catch(Exception exception){
+                initializeMaps();
+                Utils.showAlert(exception, AlertType.ERROR);
+            }
         }
         return enteredKeys;
     }
@@ -417,7 +428,8 @@ public class TrainController {
         }
     }
 
-    private Set<String> getTrainedUsers(){
+    private void getTrainedUsers(){
+        this.keyStrokeFeatureFile = fileUtils.readTrainFile();
         List<KeyStrokeFeature> keyStrokeFeatures = keyStrokeFeatureFile.getKeyStrokeFeatures();
         Set<String> trainedUsers = new HashSet<>();
         for(KeyStrokeFeature keyStrokeFeature : keyStrokeFeatures) {
@@ -430,6 +442,6 @@ public class TrainController {
             trainedUsers.add("Peterside");
             */
         }
-        return trainedUsers;
+        this.trainedUsers = trainedUsers;
     }
 }
