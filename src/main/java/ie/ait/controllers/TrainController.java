@@ -8,6 +8,7 @@ import ie.ait.models.enums.SelectedUser;
 import ie.ait.utils.FileUtils;
 import ie.ait.utils.Utils;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -19,6 +20,9 @@ import javafx.scene.layout.HBox;
 import java.beans.Statement;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static ie.ait.utils.Utils.toSentenceCase;
 
 /**
  * Created by Pelumi.Oyefeso on 12-Mar-2020
@@ -46,6 +50,8 @@ public class TrainController {
     private HBox newUserHBox;
     @FXML
     private HBox existingUserHBox;
+    @FXML
+    private Button resetButton;
     private boolean isTextCompleted;
     private String textToType = "";
     private List<String> pressedKeysList;
@@ -61,6 +67,7 @@ public class TrainController {
     private SelectedUser selectedUser = SelectedUser.NEW_USER;
     private Set<String> trainedUsers;
     private KeyStrokeFeatureFile keyStrokeFeatureFile;
+    private String currentTrainedUser;
 
     /**
      The "initialize" method is automatically called because this class is annotated with the @FXML.
@@ -69,7 +76,7 @@ public class TrainController {
         this.fileUtils = new FileUtils();
         this.keyStrokeFeatureFile = fileUtils.readTrainFile();
         initializeValues();
-        resetComponentValues();
+        //resetComponentValues();
         fetchTextToType();
         initializeMaps();
         handleEvents();
@@ -81,6 +88,7 @@ public class TrainController {
     private void initializeValues(){
         isTextCompleted = false;
         newUserRadioButton.setSelected(true);
+        resetButton.setDisable(true);
         newUserRadioButton.setDisable(true);
         existingUserRadioButton.setSelected(false);
         existingUserRadioButton.setDisable(false);
@@ -91,7 +99,10 @@ public class TrainController {
         newUserHBox.setVisible(true);
         continueButton.setDisable(true);
         existingUserLabel.setVisible(false);
+        textArea.setEditable(false);
         textArea.setDisable(true);
+        sourceTextArea.setDisable(false);
+        sourceTextArea.setEditable(false);
         trainedUsers = getTrainedUsers();
         //existingUsersComboBox.getItems().add("User");
         if(existingUsersComboBox.getItems().size() == 0) {
@@ -103,8 +114,10 @@ public class TrainController {
 
     private void resetComponentValues(){
         //initializeValues();
+        isTextCompleted = false;
         textArea.setText("");
         textArea.setEditable(true);
+        fetchTextToType();
     }
 
     private void handleEvents(){
@@ -149,12 +162,7 @@ public class TrainController {
                 existingUserRadioButtonClicked = false;
                 selectedUser = SelectedUser.NEW_USER;
                 toggleRadioButtons();
-                /*
-                anchorPane1.managedProperty().bind(anchorPane1.visibleProperty());
-                anchorPane1.setVisible(false);
-                textArea.setLayoutY(39);
-
-                 */
+                resetButtonActions();
             }
         });
         existingUserRadioButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -162,10 +170,85 @@ public class TrainController {
             public void handle(MouseEvent mouseEvent) {
                 existingUserRadioButtonClicked = true;
                 newUserRadioButtonClicked = false;
+                existingUserLabel.setVisible(false);
                 selectedUser = SelectedUser.EXISTING_USER;
                 toggleRadioButtons();
+                resetButtonActions();
+                existingUsersComboBox.setValue("--Existing Users--");
             }
         });
+
+        existingUsersComboBox.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                String currentSelectedUser = existingUsersComboBox.getValue();
+                if(trainedUsers.contains(currentSelectedUser)){
+                    currentTrainedUser = currentSelectedUser;
+                    continueButton.setDisable(false);
+                }
+                else{
+                    continueButton.setDisable(true);
+                }
+            }
+        });
+        newUserTextField.setOnKeyTyped(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                String currentTextFieldString = newUserTextField.getText().toUpperCase();
+                StringBuilder stringBuilder = new StringBuilder();
+                for(String stringCharacter : currentTextFieldString.split("")){
+                    if(Arrays.asList(alphabets).contains(stringCharacter)){
+                        stringBuilder.append(stringCharacter);
+                    }
+                }
+                newUserTextField.setText(stringBuilder.toString());
+                newUserTextField.positionCaret(newUserTextField.getText().length());
+                List<String> trainedUsersInUpperCase = trainedUsers.stream()
+                        .map((content) -> content.toUpperCase()).collect(Collectors.toList());
+                if(trainedUsersInUpperCase.contains(newUserTextField.getText())){
+                    existingUserLabel.setVisible(true);
+                    continueButton.setDisable(true);
+                }
+                else{
+                    existingUserLabel.setVisible(false);
+                    continueButton.setDisable(false);
+                    currentTrainedUser = toSentenceCase(newUserTextField.getText());
+                }
+            }
+        });
+
+        continueButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                textArea.setDisable(false);
+                textArea.setEditable(true);
+                newUserTextField.setDisable(true);
+                existingUsersComboBox.setDisable(true);
+                resetButton.setDisable(false);
+                continueButton.setDisable(true);
+                fetchTextToType();
+                sourceTextArea.setText(textToType);
+            }
+        });
+
+        resetButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                resetButtonActions();
+            }
+        });
+    }
+
+    private void resetButtonActions(){
+        textArea.setDisable(true);
+        textArea.setEditable(false);
+        newUserTextField.setDisable(false);
+        newUserTextField.setText("");
+        existingUsersComboBox.setDisable(false);
+        resetButton.setDisable(true);
+        continueButton.setDisable(true);
+        sourceTextArea.setText("");
+        existingUsersComboBox.setValue("--Existing Users--");
     }
 
     private void fetchTextToType(){
@@ -192,7 +275,7 @@ public class TrainController {
         keyStrokeFeature = computeFlightTimes(enteredKeys, keyStrokeFeature);
         keyStrokeFeature = computeTimedAverageValues(enteredKeys, keyStrokeFeature);
         //TODO: TO BE REMOVED AND REPLACED WITH IDEAL CLASSES
-        keyStrokeFeature.setFeatureClass("Pelumi");
+        keyStrokeFeature.setFeatureClass(currentTrainedUser);
         return keyStrokeFeature;
     }
 

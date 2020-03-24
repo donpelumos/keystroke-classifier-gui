@@ -59,4 +59,8 @@ public class Utils {
         alertController.display(title,headerTitle, headerDescription,message, alertType);
     }
 
+    public static String toSentenceCase(String string){
+        return string.substring(0,1).toUpperCase()+string.substring(1).toLowerCase();
+    }
+
 }

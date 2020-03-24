@@ -16,7 +16,7 @@
             <Font size="16.0" />
          </font>
       </TextArea>
-      <AnchorPane fx:id="anchorPane1" layoutX="46.0" layoutY="39.0" prefHeight="232.0" prefWidth="900.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane fx:id="anchorPane1" layoutX="46.0" layoutY="30.0" prefHeight="232.0" prefWidth="900.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox alignment="CENTER" layoutX="50.0" layoutY="-3.0" prefHeight="70.0" prefWidth="200.0" spacing="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="-3.0">
                <children>
@@ -32,7 +32,7 @@
                   </RadioButton>
                </children>
             </HBox>
-            <HBox fx:id="existingUserHBox" alignment="CENTER" layoutX="369.0" layoutY="82.0" prefHeight="70.0" prefWidth="200.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="47.0">
+            <HBox fx:id="existingUserHBox" alignment="CENTER" layoutX="369.0" layoutY="82.0" prefHeight="70.0" prefWidth="200.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="43.0">
                <children>
                   <Label text="Select : ">
                      <font>
@@ -42,7 +42,7 @@
                   <ComboBox fx:id="existingUsersComboBox" prefHeight="51.0" prefWidth="283.0" promptText="--Existing Users--" style="-fx-font-size: 18px;" />
                </children>
             </HBox>
-            <HBox fx:id="newUserHBox" alignment="CENTER" layoutX="350.0" layoutY="159.0" prefHeight="70.0" prefWidth="200.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="108.0">
+            <HBox fx:id="newUserHBox" alignment="CENTER" layoutX="350.0" layoutY="159.0" prefHeight="70.0" prefWidth="200.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="95.0">
                <children>
                   <Label text="Select : ">
                      <font>
@@ -56,24 +56,34 @@
                   </TextField>
                </children>
             </HBox>
-            <Button id="continueButton" fx:id="continueButton" layoutX="374.0" layoutY="183.0" mnemonicParsing="false" text="CONTINUE" AnchorPane.topAnchor="175.0">
+            <Button id="continueButton" fx:id="continueButton" layoutX="374.0" layoutY="176.0" mnemonicParsing="false" text="CONTINUE" AnchorPane.topAnchor="175.0">
                <font>
                   <Font size="20.0" />
                </font>
             </Button>
-            <Label fx:id="existingUserLabel" layoutX="394.0" layoutY="166.0" text="***Username exists" textFill="RED">
+            <Label fx:id="existingUserLabel" layoutX="394.0" layoutY="152.0" text="***Username exists" textFill="RED">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
          </children>
       </AnchorPane>
-      <TextArea id="sourceTextArea" fx:id="sourceTextArea" disable="true" layoutX="47.0" layoutY="317.0" prefHeight="270.0" prefWidth="485.0" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" />
-      <Label layoutX="164.0" layoutY="236.0" text="PARAGRAPH TO TYPE">
+      <TextArea id="sourceTextArea" fx:id="sourceTextArea" disable="true" layoutX="47.0" layoutY="317.0" prefHeight="270.0"
+                prefWidth="485.0" wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" >
+         <font>
+            <Font size="16.0" />
+         </font>
+      </TextArea>
+      <Label layoutX="164.0" layoutY="235.0" text="PARAGRAPH TO TYPE">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
+      <Button id="resetButton" fx:id="resetButton" layoutX="455.0" layoutY="222.0" mnemonicParsing="false" text="RESET" >
+          <font>
+               <Font size="20.0" />
+          </font>
+      </Button>
       <Label fx:id="trainedUsernameLabel" layoutX="666.0" layoutY="235.0" text="TEXT TRAINING FOR : ">
          <font>
             <Font size="18.0" />
