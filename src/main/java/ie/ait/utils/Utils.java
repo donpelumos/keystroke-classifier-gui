@@ -60,7 +60,15 @@ public class Utils {
     }
 
     public static String toSentenceCase(String string){
-        return string.substring(0,1).toUpperCase()+string.substring(1).toLowerCase();
+        if(string.trim().equals("")){
+            return "";
+        }
+        else if(string.trim().length() == 1){
+            return string.toUpperCase();
+        }
+        else {
+            return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
+        }
     }
 
 }

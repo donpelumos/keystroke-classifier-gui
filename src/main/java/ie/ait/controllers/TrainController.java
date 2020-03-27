@@ -196,7 +196,7 @@ public class TrainController {
                 }
             }
         });
-        newUserTextField.setOnKeyTyped(new EventHandler<KeyEvent>() {
+        newUserTextField.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
                 String currentTextFieldString = newUserTextField.getText().toUpperCase();
