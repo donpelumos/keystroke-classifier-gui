@@ -84,7 +84,7 @@
                <Font size="20.0" />
           </font>
       </Button>
-      <Label fx:id="trainedUsernameLabel" layoutX="666.0" layoutY="235.0" text="TEXT TRAINING FOR : ">
+      <Label fx:id="trainedUsernameLabel" layoutX="606.0" layoutY="235.0" text="TEXT TO TYPE (CASE INSENSITIVE)">
          <font>
             <Font size="18.0" />
          </font>
