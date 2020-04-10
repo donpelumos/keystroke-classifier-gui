@@ -143,6 +143,10 @@ public class TrainController {
                             extractedFeature = extractFeatureFromKeyEnteredKeys(enteredKeys);
                             if(extractedFeature.isValid()){
                                 fileUtils.appendTrainData(extractedFeature);
+                                Utils.showAlert("Success","Saved Successfully",
+                                        "KeyStroke Feature Saved Successfully",
+                                        "Keystroke feature for this user has been successfully saved to the " +
+                                                "train data file.",AlertType.INFO);
                             }
                             else{
                                 Exception invalidExtractedFeatureException = new Exception("Extracted Feature Is Not Valid");
@@ -285,7 +289,6 @@ public class TrainController {
         KeyStrokeFeature keyStrokeFeature = mapDwellTimesToKeyStrokeFeature(enteredKeys);
         keyStrokeFeature = computeFlightTimes(enteredKeys, keyStrokeFeature);
         keyStrokeFeature = computeTimedAverageValues(enteredKeys, keyStrokeFeature);
-        //TODO: TO BE REMOVED AND REPLACED WITH IDEAL CLASSES
         keyStrokeFeature.setFeatureClass(currentTrainedUser);
         return keyStrokeFeature;
     }

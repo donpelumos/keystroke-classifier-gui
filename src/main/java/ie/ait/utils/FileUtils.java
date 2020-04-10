@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Pelumi.Oyefeso on 02-Mar-2020
  */
-public class FileUtils { 
+public class FileUtils {
     private Path rootPath, trainingFilePath;
     private String sharedFolderName = "keystroke-classifier-shared-folder";
     private String trainFileName = "keystroke-classifier-train.csv";
