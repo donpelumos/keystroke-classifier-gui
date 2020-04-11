@@ -68,7 +68,7 @@ public class AlertController {
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(0,20,0,20));
         if(alertType.length > 0) {
-            if(alertType[0] == AlertType.ERROR) {
+            if(alertType[0] == AlertType.ERROR || alertType[0] == AlertType.WARNING) {
                 layout.getChildren().addAll(headerLayout, alertBodyTextArea);
             }
             else{

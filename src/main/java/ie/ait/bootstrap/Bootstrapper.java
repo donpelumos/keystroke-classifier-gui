@@ -15,8 +15,4 @@ public class Bootstrapper {
         new FileUtils().createSharedDirectory();
         LOGGER.info("Bootstrapping completed");
     }
-    private String getPath(){
-        //getClass().getClassLoader();
-        return "";
-    }
 }

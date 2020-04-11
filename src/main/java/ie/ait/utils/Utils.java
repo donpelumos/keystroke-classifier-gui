@@ -14,7 +14,9 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,22 +44,34 @@ public class Utils {
 
     public static void logException(Class className, Exception exception){
         Logger LOGGER = LoggerFactory.getLogger(className.toString());
-        LOGGER.info(className.toString(),exception);
+        LOGGER.info(className.toString() +" : "+exception);
+    }
+
+    public static void logError(Class className, String errorMessage){
+        Logger LOGGER = LoggerFactory.getLogger(className.toString());
+        LOGGER.info(className.toString() +" : "+errorMessage);
     }
 
     public static void showAlert(Exception exception, AlertType... alertType){
         StringBuilder sb = new StringBuilder();
         Arrays.stream(exception.getStackTrace()).forEach((s) -> sb.append(s.toString()+"\r\n"));
         Utils.showAlert(exception.getClass().toString().replace("class","").trim(),
-                exception.getClass().toString().replace("class","").trim(),
                 exception.getMessage(), sb.toString(), alertType);
     }
 
-    public static void showAlert(String title, String headerTitle, String headerDescription, String message, AlertType... alertType){
+    public static void showAlert(String headerTitle, String headerDescription, String message, AlertType... alertType){
         AlertController alertController = new AlertController();
+        String title = "";
+        if(alertType[0] == AlertType.INFO){
+            title = headerTitle.toUpperCase();
+        }
+        else{
+            title = alertType[0].toString();
+        }
         headerTitle += " : ";
         alertController.display(title,headerTitle, headerDescription,message, alertType);
     }
+
 
     public static String toSentenceCase(String string){
         if(string.trim().equals("")){
@@ -69,6 +83,55 @@ public class Utils {
         else {
             return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
         }
+    }
+    public static String getJavaVersion(){
+        String javaVersion = "";
+        try
+        {
+            Runtime runtime = Runtime.getRuntime();
+            Process process = runtime.exec("java -version");
+            BufferedReader r = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            String line = r.readLine();
+            while (line != null) {
+                if(line.toLowerCase().contains("java") && line.toLowerCase().contains("version")){
+                    javaVersion = line.toLowerCase().trim().split("version")[1];
+                    break;
+                }
+                line = r.readLine();
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return javaVersion.replace("\"","").trim();
+    }
+
+    public static String getPythonVersion(){
+        String pythonVersion = "";
+        try
+        {
+            Runtime runtime = Runtime.getRuntime();
+            Process process = runtime.exec("python --version");
+            BufferedReader r = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            String line = r.readLine();
+            if(line == null){
+                r = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                line = r.readLine();
+            }
+            while (line != null) {
+                if(line.toLowerCase().contains("python")){
+                    pythonVersion = line.toLowerCase().trim().split("\\s+")[1];
+                    break;
+                }
+                line = r.readLine();
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return pythonVersion.trim();
     }
 
 }

@@ -3,6 +3,8 @@ package ie.ait.main;
 import ie.ait.bootstrap.Bootstrapper;
 import ie.ait.controllers.HomeController;
 import ie.ait.controllers.TrainController;
+import ie.ait.models.enums.AlertType;
+import ie.ait.utils.Utils;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -28,6 +30,7 @@ public class SceneRoot extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        checkForJavaAndPython();
         Bootstrapper.init();
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("scene-root.fxml"));
         homeLoader = new FXMLLoader(getClass().getClassLoader().getResource("scene-home.fxml"));
@@ -94,5 +97,17 @@ public class SceneRoot extends Application {
                 }
             }
         });
+    }
+
+    private void checkForJavaAndPython(){
+        String javaVersion = Utils.getJavaVersion();
+        String pythonVersion = Utils.getPythonVersion();
+        if(javaVersion.equals("") || pythonVersion.equals("")){
+            String errorDescription = "Language Dependency Not Found";
+            String errorBody = "Java or Python is not installed. Kindly check that both java and python are installed.";
+            Utils.showAlert("Error",errorDescription, errorBody, AlertType.ERROR);
+            Utils.logError(getClass(), errorDescription+ " => "+errorBody);
+            System.exit(0);
+        }
     }
 }

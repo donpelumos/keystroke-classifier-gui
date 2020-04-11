@@ -143,7 +143,7 @@ public class TrainController {
                             extractedFeature = extractFeatureFromKeyEnteredKeys(enteredKeys);
                             if(extractedFeature.isValid()){
                                 fileUtils.appendTrainData(extractedFeature);
-                                Utils.showAlert("Success","Saved Successfully",
+                                Utils.showAlert("Saved Successfully",
                                         "KeyStroke Feature Saved Successfully",
                                         "Keystroke feature for this user has been successfully saved to the " +
                                                 "train data file.",AlertType.INFO);
