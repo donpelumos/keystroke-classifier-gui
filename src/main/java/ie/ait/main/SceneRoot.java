@@ -104,7 +104,9 @@ public class SceneRoot extends Application {
         String pythonVersion = Utils.getPythonVersion();
         if(javaVersion.equals("") || pythonVersion.equals("")){
             String errorDescription = "Language Dependency Not Found";
-            String errorBody = "Java or Python is not installed. Kindly check that both java and python are installed.";
+            String errorBody = "Java or Python is not installed. Kindly check that both java and python are installed.\\n" +
+                    "In the event that both are installed, ensure that both have been set to root variables and can be accessed " +
+                    "via the command line from any directory.";
             Utils.showAlert("Error",errorDescription, errorBody, AlertType.ERROR);
             Utils.logError(getClass(), errorDescription+ " => "+errorBody);
             System.exit(0);
