@@ -5,6 +5,7 @@ import ie.ait.models.classes.KeyStrokeFeature;
 import ie.ait.models.classes.KeyStrokeFeatureFile;
 import ie.ait.models.enums.AlertType;
 import ie.ait.models.enums.SelectedUser;
+import ie.ait.utils.FeatureExtractionUtils;
 import ie.ait.utils.FileUtils;
 import ie.ait.utils.Utils;
 import javafx.collections.ObservableList;
@@ -16,6 +17,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import jdk.nashorn.internal.runtime.ECMAException;
 
 import java.beans.Statement;
 import java.io.IOException;
@@ -138,7 +140,14 @@ public class TrainController {
                     if (textArea.getText().toUpperCase().equals(textToType)) {
                         textArea.setEditable(false);
                         isTextCompleted = true;
-                        List<EnteredKey> enteredKeys = extractEnteredKeys(pressedKeysList, releasedKeysList);
+                        List<EnteredKey> enteredKeys = new ArrayList<>();
+                        try {
+                            enteredKeys = FeatureExtractionUtils.extractEnteredKeys(pressedKeysList, releasedKeysList);
+                        }
+                        catch(Exception exception){
+                            initializeMaps();
+                            Utils.showAlert(exception, AlertType.ERROR);
+                        }
                         try {
                             extractedFeature = extractFeatureFromKeyEnteredKeys(enteredKeys);
                             if(extractedFeature.isValid()){
@@ -262,27 +271,6 @@ public class TrainController {
 
     private void fetchTextToType(){
         this.textToType = "THE SHORT HAIRED QUICK BROWN FOX COMES OUT OF IT'S CAGE AS IT JUMPS OVER THE LAZY DOG WHO LIES IN THE GRASS ASLEEP. I HOPE THIS TEST IS ABLE TO COVER ALL THAT NEEDS TO BE COVERED IN KEYSTROKE TESTING.";
-    }
-
-    private List<EnteredKey> extractEnteredKeys(List<String> pressedKeysList, List<String> releasedKeysList){
-        List<EnteredKey> enteredKeys = new ArrayList<>();
-        for(int i=0; i< pressedKeysList.size(); i++){
-            try {
-                EnteredKey enteredKey = new EnteredKey(pressedKeysList.get(i).split(",")[0].trim());
-                Long timePressed = Long.parseLong(pressedKeysList.get(i).split(",")[1].trim());
-                Long timeReleased = Long.parseLong(releasedKeysList.get(i).split(",")[1].trim());
-                Long dwellTime = Math.abs(timeReleased - timePressed);
-                enteredKey.setTimePressed(timePressed);
-                enteredKey.setTimeReleased(timeReleased);
-                enteredKey.setDwellTime(dwellTime);
-                enteredKeys.add(enteredKey);
-            }
-            catch(Exception exception){
-                initializeMaps();
-                Utils.showAlert(exception, AlertType.ERROR);
-            }
-        }
-        return enteredKeys;
     }
 
     private KeyStrokeFeature extractFeatureFromKeyEnteredKeys(List<EnteredKey> enteredKeys){
