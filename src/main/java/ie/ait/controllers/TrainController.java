@@ -137,7 +137,9 @@ public class TrainController {
                 if(!isTextCompleted){
                     String keyReleased = keyEvent.getText().trim().toUpperCase();
                     releasedKeysList.add(keyReleased+","+ System.currentTimeMillis());
-                    if (textArea.getText().toUpperCase().equals(textToType)) {
+                    String formattedInputText = textArea.getText().replaceAll("\\s+"," ");
+                    formattedInputText = formattedInputText.toUpperCase().trim();
+                    if (formattedInputText.equals(textToType)) {
                         textArea.setEditable(false);
                         isTextCompleted = true;
                         List<EnteredKey> enteredKeys = new ArrayList<>();
@@ -149,7 +151,8 @@ public class TrainController {
                             Utils.showAlert(exception, AlertType.ERROR);
                         }
                         try {
-                            extractedFeature = extractFeatureFromKeyEnteredKeys(enteredKeys);
+                            extractedFeature = new FeatureExtractionUtils().extractFeatureFromKeyEnteredKeys(enteredKeys, currentTrainedUser);
+                            //extractedFeature = extractFeatureFromKeyEnteredKeys(enteredKeys);
                             if(extractedFeature.isValid()){
                                 fileUtils.appendTrainData(extractedFeature);
                                 Utils.showAlert("Saved Successfully",
