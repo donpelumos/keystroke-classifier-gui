@@ -27,9 +27,10 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <HBox alignment="CENTER" layoutX="138.0" layoutY="185.0" prefHeight="100.0" prefWidth="700.0" spacing="20.0">
+      <HBox alignment="CENTER" layoutX="138.0" layoutY="185.0" prefHeight="100.0" prefWidth="700.0" spacing="20.0"
+            fx:id="classificationTechniqueHBox">
          <children>
-            <Label text="CLASSIFICATION TECHNIQUE">
+            <Label text="CLASSIFICATION TECHNIQUE" fx:id="classificationTechniqueLabel">
                <font>
                   <Font size="20.0" />
                </font>
