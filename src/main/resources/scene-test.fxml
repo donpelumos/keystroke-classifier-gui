@@ -38,12 +38,17 @@
             <ComboBox id="classificationTechniqueComboBox" fx:id="classificationTechniqueComboBox" prefWidth="200.0" promptText="--Select--" style="-fx-font-size: 20px;" />
          </children>
       </HBox>
-      <Button fx:id="doneButton" layoutX="474.0" layoutY="442.0" mnemonicParsing="false" text="DONE">
+      <Button fx:id="doneButton" layoutX="524.0" layoutY="442.0" mnemonicParsing="false" text="DONE">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
-      <Label fx:id="resultLabel" layoutX="474.0" layoutY="498.0" text="RESULT : ">
+      <Button fx:id="resetButton" layoutX="404.0" layoutY="442.0" mnemonicParsing="false" text="RESET">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+      <Label fx:id="resultLabel" layoutX="410.0" layoutY="498.0" text="RESULT : PREDICTION">
          <font>
             <Font size="20.0" />
          </font>
