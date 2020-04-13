@@ -67,7 +67,7 @@ public class SceneRoot extends Application {
         tabPane.getTabs().add(homeTab);
         tabPane.getTabs().add(trainTab);
         tabPane.getTabs().add(testTab);
-        tabPane.getTabs().add(settingsTab);
+        //tabPane.getTabs().add(settingsTab);
 
         VBox vBox = new VBox(tabPane);
         Scene scene = new Scene(vBox);
