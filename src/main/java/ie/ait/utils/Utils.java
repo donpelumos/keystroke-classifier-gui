@@ -18,10 +18,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.invoke.MethodHandles;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by Pelumi.Oyefeso on 02-Mar-2020
@@ -132,6 +129,65 @@ public class Utils {
             e.printStackTrace();
         }
         return pythonVersion.trim();
+    }
+
+    public static boolean checkPythonDependency(){
+        boolean allDependenciesExist = true;
+        Map<String, String> installedPythonDependencies = getExistingInstalledPythonDependencies();
+        String [] requiredPythonDependencies = definedPythonDependencies();
+        for(String dependency : requiredPythonDependencies){
+            if(!installedPythonDependencies.containsKey(dependency)){
+                allDependenciesExist = false;
+                break;
+            }
+        }
+        return allDependenciesExist;
+    }
+
+    public static String [] getOutstandingPythonDependencies(){
+        List<String> outstandingDependencies = new ArrayList<>();
+        Map<String, String> installedPythonDependencies = getExistingInstalledPythonDependencies();
+        String [] requiredPythonDependencies = definedPythonDependencies();
+        for(String dependency : requiredPythonDependencies){
+            if(!installedPythonDependencies.containsKey(dependency)){
+                outstandingDependencies.add(dependency);
+            }
+        }
+        String [] outstandingDependenciesArray = new String [outstandingDependencies.size()];
+        for(int i=0 ; i<outstandingDependencies.size(); i++){
+            outstandingDependenciesArray[i] = outstandingDependencies.get(i);
+        }
+        return outstandingDependenciesArray;
+    }
+
+    private static Map<String, String> getExistingInstalledPythonDependencies(){
+        Map<String, String> installedPythonDependencies = new HashMap<>();
+        try
+        {
+            Runtime runtime = Runtime.getRuntime();
+            Process process = runtime.exec("pip list");
+            BufferedReader r = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            String line = r.readLine();
+            if(line == null){
+                r = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                line = r.readLine();
+            }
+            while (line != null) {
+                String dependencyName = line.trim().split("\\s+")[0];
+                String dependencyVersion = line.trim().split("\\s+")[1];
+                installedPythonDependencies.put(dependencyName, dependencyVersion);
+                line = r.readLine();
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return installedPythonDependencies;
+    }
+
+    private static String[] definedPythonDependencies(){
+        return new String[]{"pandas","numpy","sklearn"};
     }
 
 }

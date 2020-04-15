@@ -22,6 +22,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 public class SceneRoot extends Application {
     private FXMLLoader homeLoader;
     private FXMLLoader trainLoader;
@@ -116,6 +120,15 @@ public class SceneRoot extends Application {
             String errorDescription = "Old Python Version";
             String errorBody = "This application requires Python 3.4 or later. Kindly check to ensure that a version of Python " +
                     "equivalent to or later than 3.4 is installes on the system";
+            Utils.showAlert("Error",errorDescription, errorBody, AlertType.ERROR);
+            Utils.logError(getClass(), errorDescription+ " => "+errorBody);
+            System.exit(0);
+        }
+        boolean isPythonDependencyInstalled = Utils.checkPythonDependency();
+        if(!isPythonDependencyInstalled){
+            String [] outstandingPythonDependencies = Utils.getOutstandingPythonDependencies();
+            String errorDescription = "Outstanding Python Dependencies";
+            String errorBody = "This following Python dependencies "+Arrays.toString(outstandingPythonDependencies)+" are not installed.";
             Utils.showAlert("Error",errorDescription, errorBody, AlertType.ERROR);
             Utils.logError(getClass(), errorDescription+ " => "+errorBody);
             System.exit(0);
