@@ -48,7 +48,7 @@
             <Font size="20.0" />
          </font>
       </Button>
-      <Label fx:id="resultLabel" layoutX="410.0" layoutY="498.0" text="RESULT : PREDICTION">
+      <Label fx:id="resultLabel" layoutX="410.0" layoutY="498.0" text="RESULT : ">
          <font>
             <Font size="20.0" />
          </font>

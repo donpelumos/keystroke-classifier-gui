@@ -18,10 +18,7 @@ import javafx.scene.layout.HBox;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Pelumi.Oyefeso on 24-Mar-2020
@@ -94,6 +91,7 @@ public class TestController {
                     doneButton.setDisable(true);
                 }
             }
+            resultLabel.setText("RESULT : ");
         });
 
         doneButton.setOnAction(event -> {
@@ -106,12 +104,26 @@ public class TestController {
             }
             try {
                 extractedFeature = new FeatureExtractionUtils().extractFeatureFromKeyEnteredKeys(enteredKeys);
+                resultLabel.setText("RESULT : ");
                 if(extractedFeature.isValid()){
                     String keyStrokeStringForTest = extractedFeature.geKeyStrokeFeatureAsTestString();
                     String trainingCSVFilePathString = getTrainCSVFilePath();
                     String pythonScriptPath = getPythonScriptPath();
-                    String predictedUser = FeatureClassificationUtils.classifyTestData(pythonScriptPath,trainingCSVFilePathString,
-                            keyStrokeStringForTest,"0.3","3");
+                    String predictedUser = "";
+                    try{
+                        predictedUser = FeatureClassificationUtils.classifyTestData(pythonScriptPath,trainingCSVFilePathString,
+                                keyStrokeStringForTest,"0.3","3");
+                        resultLabel.setText("RESULT : "+predictedUser);
+                    }
+                    catch(Exception e){
+                        String errorDescription = "Classification Error";
+                        String errorBody = "There was an error in classification. Kindly check to ensure that the training dataset " +
+                                "file is properly named as well as its parent folder. The naming format is as follows : " +
+                                "'\\keystroke-classifier-shared-folder\\keystroke-classifier-train.csv'";
+                        Utils.showAlert("Error",errorDescription, errorBody, AlertType.ERROR);
+                        Utils.logError(getClass(), errorDescription+ " => "+errorBody);
+                        resultLabel.setText("RESULT : ");
+                    }
                 }
                 else{
                     Exception invalidExtractedFeatureException = new Exception("Extracted Feature Is Not Valid");
@@ -126,6 +138,7 @@ public class TestController {
 
         resetButton.setOnAction(actionEvent -> {
             resetTextValues();
+            resultLabel.setText("RESULT : ");
         });
     }
 
@@ -150,6 +163,7 @@ public class TestController {
         doneButton.setDisable(true);
         enteredTextArea.setEditable(true);
         enteredTextArea.setDisable(false);
+        resultLabel.setText("RESULT : ");
     }
 
     private void fetchTextToType(){
