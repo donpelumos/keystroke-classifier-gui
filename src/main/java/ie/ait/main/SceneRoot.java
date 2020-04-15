@@ -100,13 +100,22 @@ public class SceneRoot extends Application {
     }
 
     private void checkForJavaAndPython(){
-        String javaVersion = Utils.getJavaVersion();
-        String pythonVersion = Utils.getPythonVersion();
+        String javaVersion = Utils.getJavaVersion().trim();
+        String pythonVersion = Utils.getPythonVersion().trim();
+        double pythonVersionNumber = Double.parseDouble(pythonVersion.split("\\.")[0]+"."+pythonVersion.split("\\.")[1]);
         if(javaVersion.equals("") || pythonVersion.equals("")){
             String errorDescription = "Language Dependency Not Found";
             String errorBody = "Java or Python is not installed. Kindly check that both java and python are installed.\\n" +
                     "In the event that both are installed, ensure that both have been set to root variables and can be accessed " +
                     "via the command line from any directory.";
+            Utils.showAlert("Error",errorDescription, errorBody, AlertType.ERROR);
+            Utils.logError(getClass(), errorDescription+ " => "+errorBody);
+            System.exit(0);
+        }
+        else if(pythonVersionNumber < 3.4){
+            String errorDescription = "Old Python Version";
+            String errorBody = "This application requires Python 3.4 or later. Kindly check to ensure that a version of Python " +
+                    "equivalent to or later than 3.4 is installes on the system";
             Utils.showAlert("Error",errorDescription, errorBody, AlertType.ERROR);
             Utils.logError(getClass(), errorDescription+ " => "+errorBody);
             System.exit(0);

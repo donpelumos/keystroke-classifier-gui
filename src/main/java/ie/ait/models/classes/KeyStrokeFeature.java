@@ -431,6 +431,16 @@ public class KeyStrokeFeature{
         this.average2 = Double.parseDouble(String.format("%.2f",Math.random()));
         this.featureClass = "Class "+String.valueOf((int)(Double.parseDouble(String.format("%.3f",Math.random()))*100));
     }
+
+    public String geKeyStrokeFeatureAsTestString(){
+        String stringValue = String.format("%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f," +
+                        "%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f," +
+                        "%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f",
+                A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,
+                TH,HE,IN,ER,AN,RE,ND,AT,ON,NT,
+                average1, average2);
+        return stringValue;
+    }
     
     @Override
     public String toString(){

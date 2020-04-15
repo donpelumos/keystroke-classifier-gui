@@ -1,11 +1,18 @@
 package ie.ait.controllers;
 
+import ie.ait.models.classes.EnteredKey;
 import ie.ait.models.classes.KeyStrokeFeature;
+import ie.ait.models.enums.AlertType;
+import ie.ait.utils.FeatureExtractionUtils;
+import ie.ait.utils.Utils;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
@@ -51,13 +58,74 @@ public class TestController {
         sourceTextArea.setEditable(false);
         classificationTechniqueComboBox.setVisible(false);
         classificationTechniqueLabel.setVisible(false);
+        this.sourceTextArea.setWrapText(true);
+        this.enteredTextArea.setEditable(true);
+        this.enteredTextArea.setDisable(false);
         initializeValues();
         fetchTextToType();
         initializeMaps();
-        //handleEvents();
+        handleEvents();
 
     }
 
+    private void handleEvents(){
+        enteredTextArea.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if(!isTextCompleted){
+                    String keyPressed = keyEvent.getText().trim().toUpperCase();
+                    pressedKeysList.add(keyPressed+","+ System.currentTimeMillis());
+                }
+            }
+        });
+        enteredTextArea.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if(!isTextCompleted){
+                    String keyReleased = keyEvent.getText().trim().toUpperCase();
+                    releasedKeysList.add(keyReleased+","+ System.currentTimeMillis());
+                    String formattedInputText = enteredTextArea.getText().replaceAll("\\s+"," ");
+                    formattedInputText = formattedInputText.toUpperCase().trim();
+                    if (formattedInputText.equals(textToType)) {
+                        enteredTextArea.setEditable(false);
+                        isTextCompleted = true;
+                        List<EnteredKey> enteredKeys = new ArrayList<>();
+                        try {
+                            enteredKeys = FeatureExtractionUtils.extractEnteredKeys(pressedKeysList, releasedKeysList);
+                        }
+                        catch(Exception exception){
+                            Utils.showAlert(exception, AlertType.ERROR);
+                        }
+                        try {
+                            extractedFeature = new FeatureExtractionUtils().extractFeatureFromKeyEnteredKeys(enteredKeys);
+                            if(extractedFeature.isValid()){
+                                String keyStrokeStringForTest = extractedFeature.geKeyStrokeFeatureAsTestString();
+                            }
+                            else{
+                                Exception invalidExtractedFeatureException = new Exception("Extracted Feature Is Not Valid");
+                                throw invalidExtractedFeatureException;
+                            }
+                        }
+                        catch(Exception e){
+                            Utils.showAlert(e, AlertType.ERROR);
+                        }
+                        resetTextValues();
+                    }
+                }
+            }
+        });
+
+        resetButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                resetTextValues();
+            }
+        });
+    }
+
+    public void resetTextValues(){
+        enteredTextArea.setText("");
+    }
 
 
     private void initializeValues(){
@@ -66,14 +134,13 @@ public class TestController {
         enteredTextArea.setWrapText(true);
         pressedKeysList = new ArrayList<>();
         releasedKeysList = new ArrayList<>();
-        enteredTextArea.setEditable(false);
-        enteredTextArea.setDisable(true);
         sourceTextArea.setDisable(false);
         sourceTextArea.setEditable(false);
     }
 
     private void fetchTextToType(){
         this.textToType = "THE SHORT HAIRED QUICK BROWN FOX COMES OUT OF IT'S CAGE AS IT JUMPS OVER THE LAZY DOG WHO LIES IN THE GRASS ASLEEP. I HOPE THIS TEST IS ABLE TO COVER ALL THAT NEEDS TO BE COVERED IN KEYSTROKE TESTING.";
+        this.sourceTextArea.setText(this.textToType);
     }
 
     private void initializeMaps(){

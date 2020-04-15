@@ -44,6 +44,14 @@ public class FeatureExtractionUtils {
         return keyStrokeFeature;
     }
 
+    public  KeyStrokeFeature extractFeatureFromKeyEnteredKeys(List<EnteredKey> enteredKeys){
+        KeyStrokeFeature keyStrokeFeature = mapDwellTimesToKeyStrokeFeature(enteredKeys);
+        keyStrokeFeature = computeFlightTimes(enteredKeys, keyStrokeFeature);
+        keyStrokeFeature = computeTimedAverageValues(enteredKeys, keyStrokeFeature);
+        keyStrokeFeature.setFeatureClass(null);
+        return keyStrokeFeature;
+    }
+
     private KeyStrokeFeature mapDwellTimesToKeyStrokeFeature(List<EnteredKey> enteredKeys){
         List<String> alphabetList = Arrays.asList(alphabets);
         for(EnteredKey enteredKey : enteredKeys){

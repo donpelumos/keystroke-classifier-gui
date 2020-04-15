@@ -155,6 +155,7 @@ public class FileUtils {
         writer.close();
     }
 
+
     private KeyStrokeFeatureFile mapFileToKeyStrokeFeature(String pathString) throws Exception{
         KeyStrokeFeatureFile keyStrokeFeatureFile = new KeyStrokeFeatureFile();
         keyStrokeFeatureFile.setKeyStrokeFeatureFileName(pathString);
