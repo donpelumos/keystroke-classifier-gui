@@ -3,6 +3,7 @@ package ie.ait.controllers;
 import ie.ait.models.classes.EnteredKey;
 import ie.ait.models.classes.KeyStrokeFeature;
 import ie.ait.models.enums.AlertType;
+import ie.ait.utils.FeatureClassificationUtils;
 import ie.ait.utils.FeatureExtractionUtils;
 import ie.ait.utils.Utils;
 import javafx.event.ActionEvent;
@@ -15,6 +16,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,12 +58,7 @@ public class TestController {
      */
     public void initialize(){
         classificationTechniqueComboBox.getItems().addAll("KNN","SVM","DECISION TREES");
-        sourceTextArea.setEditable(false);
-        classificationTechniqueComboBox.setVisible(false);
-        classificationTechniqueLabel.setVisible(false);
-        this.sourceTextArea.setWrapText(true);
-        this.enteredTextArea.setEditable(true);
-        this.enteredTextArea.setDisable(false);
+
         initializeValues();
         fetchTextToType();
         initializeMaps();
@@ -69,73 +67,89 @@ public class TestController {
     }
 
     private void handleEvents(){
-        enteredTextArea.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-                if(!isTextCompleted){
-                    String keyPressed = keyEvent.getText().trim().toUpperCase();
-                    pressedKeysList.add(keyPressed+","+ System.currentTimeMillis());
-                }
+        enteredTextArea.setOnKeyPressed(keyEvent -> {
+            if(!isTextCompleted){
+                String keyPressed = keyEvent.getText().trim().toUpperCase();
+                pressedKeysList.add(keyPressed+","+ System.currentTimeMillis());
             }
         });
-        enteredTextArea.setOnKeyReleased(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-                if(!isTextCompleted){
-                    String keyReleased = keyEvent.getText().trim().toUpperCase();
-                    releasedKeysList.add(keyReleased+","+ System.currentTimeMillis());
-                    String formattedInputText = enteredTextArea.getText().replaceAll("\\s+"," ");
-                    formattedInputText = formattedInputText.toUpperCase().trim();
-                    if (formattedInputText.equals(textToType)) {
-                        enteredTextArea.setEditable(false);
-                        isTextCompleted = true;
-                        List<EnteredKey> enteredKeys = new ArrayList<>();
-                        try {
-                            enteredKeys = FeatureExtractionUtils.extractEnteredKeys(pressedKeysList, releasedKeysList);
-                        }
-                        catch(Exception exception){
-                            Utils.showAlert(exception, AlertType.ERROR);
-                        }
-                        try {
-                            extractedFeature = new FeatureExtractionUtils().extractFeatureFromKeyEnteredKeys(enteredKeys);
-                            if(extractedFeature.isValid()){
-                                String keyStrokeStringForTest = extractedFeature.geKeyStrokeFeatureAsTestString();
-                            }
-                            else{
-                                Exception invalidExtractedFeatureException = new Exception("Extracted Feature Is Not Valid");
-                                throw invalidExtractedFeatureException;
-                            }
-                        }
-                        catch(Exception e){
-                            Utils.showAlert(e, AlertType.ERROR);
-                        }
-                        resetTextValues();
-                    }
+
+        enteredTextArea.setOnKeyReleased(keyEvent -> {
+            if(!isTextCompleted){
+                String keyReleased = keyEvent.getText().trim().toUpperCase();
+                releasedKeysList.add(keyReleased+","+ System.currentTimeMillis());
+                String formattedInputText = enteredTextArea.getText().replaceAll("\\s+"," ");
+                formattedInputText = formattedInputText.toUpperCase().trim();
+                doneButton.setDisable(true);
+                if (formattedInputText.equals(textToType)) {
+                    isTextCompleted = true;
+                    doneButton.setDisable(false);
+                }
+            }
+            else{
+                String formattedInputText = enteredTextArea.getText().replaceAll("\\s+"," ");
+                formattedInputText = formattedInputText.toUpperCase().trim();
+                if(!formattedInputText.equals(textToType)){
+                    isTextCompleted = false;
+                    doneButton.setDisable(true);
                 }
             }
         });
 
-        resetButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                resetTextValues();
+        doneButton.setOnAction(event -> {
+            List<EnteredKey> enteredKeys = new ArrayList<>();
+            try {
+                enteredKeys = FeatureExtractionUtils.extractEnteredKeys(pressedKeysList, releasedKeysList);
             }
+            catch(Exception exception){
+                Utils.showAlert(exception, AlertType.ERROR);
+            }
+            try {
+                extractedFeature = new FeatureExtractionUtils().extractFeatureFromKeyEnteredKeys(enteredKeys);
+                if(extractedFeature.isValid()){
+                    String keyStrokeStringForTest = extractedFeature.geKeyStrokeFeatureAsTestString();
+                    String trainingCSVFilePathString = getTrainCSVFilePath();
+                    String pythonScriptPath = getPythonScriptPath();
+                    String predictedUser = FeatureClassificationUtils.classifyTestData(pythonScriptPath,trainingCSVFilePathString,
+                            keyStrokeStringForTest,"0.3","3");
+                }
+                else{
+                    Exception invalidExtractedFeatureException = new Exception("Extracted Feature Is Not Valid");
+                    throw invalidExtractedFeatureException;
+                }
+            }
+            catch(Exception e){
+                Utils.showAlert(e, AlertType.ERROR);
+            }
+            resetTextValues();
+        });
+
+        resetButton.setOnAction(actionEvent -> {
+            resetTextValues();
         });
     }
 
     public void resetTextValues(){
         enteredTextArea.setText("");
+        pressedKeysList = new ArrayList<>();
+        releasedKeysList = new ArrayList<>();
     }
 
 
     private void initializeValues(){
         isTextCompleted = false;
-        resetButton.setDisable(true);
         enteredTextArea.setWrapText(true);
+        sourceTextArea.setWrapText(true);
         pressedKeysList = new ArrayList<>();
         releasedKeysList = new ArrayList<>();
         sourceTextArea.setDisable(false);
         sourceTextArea.setEditable(false);
+        classificationTechniqueComboBox.setVisible(false);
+        classificationTechniqueLabel.setVisible(false);
+        resetButton.setDisable(false);
+        doneButton.setDisable(true);
+        enteredTextArea.setEditable(true);
+        enteredTextArea.setDisable(false);
     }
 
     private void fetchTextToType(){
@@ -150,5 +164,32 @@ public class TestController {
             keyPressedCount.put(alphabet,(double)0);
             keyPressedTotalDwellTime.put(alphabet, (double)0);
         }
+    }
+
+    private String getPythonScriptPath(){
+        String scriptPath = Utils.getKNNPythonScriptPath();
+        if(!Files.exists(Paths.get(scriptPath))){
+            String errorDescription = "Application Dependency Error";
+            String errorBody = "The python script required to work with this application is not found. If the jar is being run, " +
+                    "ensure that the file path 'python_files\\KeyStrokeKNNClassifier.py' exists in the same directory of the jar.\\n" +
+                    "If the application is being run from an IDE, ensure that the file path 'python_files\\KeyStrokeKNNClassifier.py' " +
+                    "exists in the project root directory";
+            Utils.showAlert("Error",errorDescription, errorBody, AlertType.ERROR);
+            Utils.logError(getClass(), errorDescription+ " => "+errorBody);
+            System.exit(0);
+        }
+        return scriptPath;
+    }
+
+    private String getTrainCSVFilePath(){
+        String filePath = Utils.getDatasetCSVFilePath();
+        if(!Files.exists(Paths.get(filePath))){
+            String errorDescription = "Application Dependency Error";
+            String errorBody = "The training data CSV file is not found. Start training new users to re-generate the file.";
+            Utils.showAlert("Error",errorDescription, errorBody, AlertType.ERROR);
+            Utils.logError(getClass(), errorDescription+ " => "+errorBody);
+            System.exit(0);
+        }
+        return filePath;
     }
 }

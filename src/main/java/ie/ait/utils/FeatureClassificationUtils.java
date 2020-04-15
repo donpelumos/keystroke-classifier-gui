@@ -8,12 +8,12 @@ import java.io.InputStreamReader;
  */
 public class FeatureClassificationUtils {
 
-    public static String classifyTestData(String datasetFilePath, String filePath, String testString, String testSize, String neighbourSize){
+    public static String classifyTestData(String pythonScriptFilePath, String dataSetFilePath, String testString, String testSize, String neighbourSize){
         String predictedClass = "";
         try
         {
             Runtime runtime = Runtime.getRuntime();
-            String command = datasetFilePath + " " + filePath+" "+testString+" "+ testSize+" "+neighbourSize;
+            String command = pythonScriptFilePath + " " + dataSetFilePath+" "+testString+" "+ testSize+" "+neighbourSize;
             Process process = runtime.exec("python.exe "+command);
             BufferedReader r = new BufferedReader(new InputStreamReader(process.getErrorStream()));
             String line = r.readLine();

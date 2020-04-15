@@ -15,9 +15,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.invoke.MethodHandles;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -188,6 +191,17 @@ public class Utils {
 
     private static String[] definedPythonDependencies(){
         return new String[]{"pandas","numpy","sklearn"};
+    }
+
+    public static String getKNNPythonScriptPath(){
+        String scriptPath = Paths.get(System.getProperty("user.dir")).toString()+ "\\python_files\\KeyStrokeKNNClassifier.py";
+        return scriptPath;
+    }
+
+    public static String getDatasetCSVFilePath(){
+        String datasetPath = Paths.get(System.getProperty("user.dir")).toString()+
+                "\\keystroke-classifier-shared-folder\\keystroke-classifier-train.csv";
+        return datasetPath;
     }
 
 }
