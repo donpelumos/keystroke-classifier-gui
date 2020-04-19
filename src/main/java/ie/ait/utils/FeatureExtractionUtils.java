@@ -35,7 +35,7 @@ public class FeatureExtractionUtils {
                 enteredKeys.add(enteredKey);
             }
             catch(Exception e){
-                Utils.showAlert(e, AlertType.ERROR);
+                //Utils.showAlert(e, AlertType.ERROR);
                 e.printStackTrace();
             }
         }
