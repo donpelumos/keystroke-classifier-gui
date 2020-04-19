@@ -190,7 +190,7 @@ public class Utils {
     }
 
     private static String[] definedPythonDependencies(){
-        return new String[]{"pandas","numpy","sklearn"};
+        return new String[]{"pandas","numpy","scipy","scikit-learn"};
     }
 
     public static String getKNNPythonScriptPath(){
