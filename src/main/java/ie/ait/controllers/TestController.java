@@ -104,6 +104,7 @@ public class TestController {
             }
             try {
                 extractedFeature = new FeatureExtractionUtils().extractFeatureFromKeyEnteredKeys(enteredKeys);
+                extractedFeature.setLeftAndRightKeysSum();
                 resultLabel.setText("RESULT : ");
                 if(extractedFeature.isValid()){
                     String keyStrokeStringForTest = extractedFeature.geKeyStrokeFeatureAsTestString();

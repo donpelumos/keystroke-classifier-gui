@@ -147,6 +147,7 @@ public class TrainController {
                         }
                         try {
                             extractedFeature = new FeatureExtractionUtils().extractFeatureFromKeyEnteredKeys(enteredKeys, currentTrainedUser);
+                            extractedFeature.setLeftAndRightKeysSum();
                             //extractedFeature = extractFeatureFromKeyEnteredKeys(enteredKeys);
                             if(extractedFeature.isValid()){
                                 fileUtils.appendTrainData(extractedFeature);

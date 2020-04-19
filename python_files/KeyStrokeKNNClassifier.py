@@ -25,9 +25,9 @@ class KeyStrokeClassifierKNN:
 
     def fetch_classification(self):
         keystroke_data = pd.read_csv(self.dataset_file_path)
-        data = keystroke_data.iloc[:, 0:38]
+        data = keystroke_data.iloc[:, 0:40]
         le = preprocessing.LabelEncoder()
-        #encoded_value = le.fit_transform(keystroke_data.iloc[:, 38:39])
+        #encoded_value = le.fit_transform(keystroke_data.iloc[:, 40:41])
         target = keystroke_data['CLASS']
         sample_text_row = pd.DataFrame.transpose(pd.DataFrame(self.test_feature_string.split(",")))
 

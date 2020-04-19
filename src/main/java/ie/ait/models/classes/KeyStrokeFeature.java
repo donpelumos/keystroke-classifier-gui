@@ -86,6 +86,11 @@ public class KeyStrokeFeature{
     @CsvBindByName
     private double average2;
 
+    @CsvBindByName(column = "left_keys_sum")
+    private double leftKeysSum;
+    @CsvBindByName(column = "right_keys_sum")
+    private double rightKeysSum;
+
     @CsvBindByName(column = "class")
     private String featureClass;
 
@@ -404,9 +409,34 @@ public class KeyStrokeFeature{
         Z = z;
     }
 
+    public double getLeftKeysSum() {
+        return leftKeysSum;
+    }
+
+    public void setLeftKeysSum(double leftKeysSum) {
+        this.leftKeysSum = leftKeysSum;
+    }
+
+    public double getRightKeysSum() {
+        return rightKeysSum;
+    }
+
+    public void setRightKeysSum(double rightKeysSum) {
+        this.rightKeysSum = rightKeysSum;
+    }
+
+    public void setLeftAndRightKeysSum(){
+        double leftSum = this.getA()+this.getQ()+this.getZ()+this.getW()+this.getS()+this.getX()+this.getE()+this.getD()+
+                this.getC()+this.getR()+this.getF()+this.getV()+this.getG()+this.getT();
+        double rightSum = this.getY()+this.getH()+this.getB()+this.getU()+this.getJ()+this.getN()+this.getI()+this.getK()+
+                this.getM()+this.getO()+this.getL()+this.getP();
+        this.setLeftKeysSum(leftSum);
+        this.setRightKeysSum(rightSum);
+    }
+
     public static String getKeyStrokeFeatureHeader(){
         String headerString = "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,TH,HE,IN,ER,AN,RE,ND,AT,ON,NT," +
-                "AVERAGE1,AVERAGE2,CLASS";
+                "AVERAGE1,AVERAGE2,LEFT_KEYS_SUM,RIGHT_KEYS_SUM,CLASS";
         return headerString;
     }
 
@@ -416,7 +446,7 @@ public class KeyStrokeFeature{
         this.S = 0.1;this.T = 0.1;this.U = 0.1;this.V = 0.1;this.W = 0.1;this.X = 0.1;this.Y = 0.1;this.Z = 0.1;
         this.TH = 0.23;this.HE = 0.23;this.IN = 0.23;this.ER = 0.23;this.AN = 0.23;this.RE = 0.23;this.ND = 0.23;
         this.AT = 0.23;this.ON = 0.23;this.NT = 0.23;
-        this.average1 = 5; this.average2 = 6;
+        this.average1 = 5; this.average2 = 6; this.leftKeysSum = 0.3; this.rightKeysSum = 0.3;
         this.featureClass = "Class";
     }
 
@@ -429,16 +459,18 @@ public class KeyStrokeFeature{
         //this.modal1 = (int)(Double.parseDouble(String.format("%.3f",Math.random()))*100);
         this.average1 = Double.parseDouble(String.format("%.2f",Math.random()));
         this.average2 = Double.parseDouble(String.format("%.2f",Math.random()));
+        this.leftKeysSum = Double.parseDouble(String.format("%.2f",Math.random()));
+        this.rightKeysSum = Double.parseDouble(String.format("%.2f",Math.random()));
         this.featureClass = "Class "+String.valueOf((int)(Double.parseDouble(String.format("%.3f",Math.random()))*100));
     }
 
     public String geKeyStrokeFeatureAsTestString(){
         String stringValue = String.format("%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f," +
                         "%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f," +
-                        "%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f",
+                        "%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f",
                 A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,
                 TH,HE,IN,ER,AN,RE,ND,AT,ON,NT,
-                average1, average2);
+                average1, average2, leftKeysSum, rightKeysSum);
         return stringValue;
     }
     
@@ -446,10 +478,10 @@ public class KeyStrokeFeature{
     public String toString(){
         String stringValue = String.format("%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f," +
                 "%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f," +
-                        "%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%s",
+                        "%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%s",
                 A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,
                 TH,HE,IN,ER,AN,RE,ND,AT,ON,NT,
-                average1, average2,
+                average1, average2,leftKeysSum, rightKeysSum,
                 featureClass);
         return stringValue;
     }

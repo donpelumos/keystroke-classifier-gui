@@ -184,7 +184,7 @@ public class FileUtils {
         String line = "";
         while ((line = reader.readLine()) != null) {
             if(line.contains(",")){
-                if (line.trim().split(",").length == 39) {
+                if (line.trim().split(",").length == 41) {
                     content.append(line);
                     content.append(System.lineSeparator());
                 }
