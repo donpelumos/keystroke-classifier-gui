@@ -62,6 +62,7 @@ public class AlertController {
         alertBodyTextArea.setMinHeight(ALERT_HEIGHT - 350);
         alertBodyTextArea.setMaxHeight(ALERT_HEIGHT - 100);
         alertBodyTextArea.setWrapText(true);
+        alertBodyTextArea.setFont(Font.font(16));
         alertBodyTextArea.setEditable(false);
         alertBodyTextArea.setText(message);
 
