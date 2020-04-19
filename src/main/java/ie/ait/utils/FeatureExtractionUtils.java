@@ -34,6 +34,9 @@ public class FeatureExtractionUtils {
                 enteredKey.setDwellTime(dwellTime);
                 enteredKeys.add(enteredKey);
             }
+            catch(NumberFormatException numberException){
+                continue;
+            }
             catch(Exception e){
                 //Utils.showAlert(e, AlertType.ERROR);
                 e.printStackTrace();
