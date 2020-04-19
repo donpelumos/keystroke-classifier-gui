@@ -77,7 +77,7 @@ public class TrainController {
         this.fileUtils = new FileUtils();
         this.keyStrokeFeatureFile = fileUtils.readTrainFile();
         initializeValues();
-        fetchTextToType();
+        this.textToType = Utils.getRandomTextToTypeString();
         handleEvents();
     }
 
@@ -135,7 +135,7 @@ public class TrainController {
                     releasedKeysList.add(keyReleased+","+ System.currentTimeMillis());
                     String formattedInputText = textArea.getText().replaceAll("\\s+"," ");
                     formattedInputText = formattedInputText.toUpperCase().trim();
-                    if (formattedInputText.equals(textToType)) {
+                    if (formattedInputText.equals(textToType.trim())) {
                         textArea.setEditable(false);
                         isTextCompleted = true;
                         List<EnteredKey> enteredKeys = new ArrayList<>();
@@ -154,6 +154,7 @@ public class TrainController {
                                         "KeyStroke Feature Saved Successfully",
                                         "Keystroke feature for this user has been successfully saved to the " +
                                                 "train data file.",AlertType.INFO);
+                                fetchTextToType();
                             }
                             else{
                                 Exception invalidExtractedFeatureException = new Exception("Extracted Feature Is Not Valid");
@@ -242,7 +243,6 @@ public class TrainController {
                 resetButton.setDisable(false);
                 continueButton.setDisable(true);
                 fetchTextToType();
-                sourceTextArea.setText(textToType);
             }
         });
 
@@ -263,11 +263,14 @@ public class TrainController {
         resetButton.setDisable(true);
         continueButton.setDisable(true);
         sourceTextArea.setText("");
+        textArea.setText("");
         existingUsersComboBox.setValue("--Existing Users--");
     }
 
     private void fetchTextToType(){
-        this.textToType = "THE SHORT HAIRED QUICK BROWN FOX COMES OUT OF IT'S CAGE AS IT JUMPS OVER THE LAZY DOG WHO LIES IN THE GRASS ASLEEP. I HOPE THIS TEST IS ABLE TO COVER ALL THAT NEEDS TO BE COVERED IN KEYSTROKE TESTING.";
+        //this.textToType = "THE SHORT HAIRED QUICK BROWN FOX COMES OUT OF IT'S CAGE AS IT JUMPS OVER THE LAZY DOG WHO LIES IN THE GRASS ASLEEP. I HOPE THIS TEST IS ABLE TO COVER ALL THAT NEEDS TO BE COVERED IN KEYSTROKE TESTING.";
+        this.textToType = Utils.getRandomTextToTypeString();
+        sourceTextArea.setText(textToType);
     }
 
     private void toggleRadioButtons(){

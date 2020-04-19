@@ -2,6 +2,7 @@ package ie.ait.main;
 
 import ie.ait.bootstrap.Bootstrapper;
 import ie.ait.controllers.HomeController;
+import ie.ait.controllers.TestController;
 import ie.ait.controllers.TrainController;
 import ie.ait.models.enums.AlertType;
 import ie.ait.utils.Utils;
@@ -83,24 +84,25 @@ public class SceneRoot extends Application {
         primaryStage.resizableProperty().setValue(Boolean.FALSE);
         primaryStage.show();
 
-        homeTab.setOnSelectionChanged(new EventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-                boolean isSelected = ((Tab)(event.getTarget())).isSelected();
-                if(isSelected) {
-                    System.out.println("HOME TAB CLICKED");
-                    ((HomeController)homeLoader.getController()).initialize();
-                }
+        homeTab.setOnSelectionChanged(event -> {
+            boolean isSelected = ((Tab)(event.getTarget())).isSelected();
+            if(isSelected) {
+                System.out.println("HOME TAB CLICKED");
+                ((HomeController)homeLoader.getController()).initialize();
             }
         });
-        trainTab.setOnSelectionChanged(new EventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-                boolean isSelected = ((Tab)(event.getTarget())).isSelected();
-                if(isSelected) {
-                    System.out.println("TRAIN TAB CLICKED");
-                    ((TrainController)trainLoader.getController()).initialize();
-                }
+        trainTab.setOnSelectionChanged(event -> {
+            boolean isSelected = ((Tab)(event.getTarget())).isSelected();
+            if(isSelected) {
+                System.out.println("TRAIN TAB CLICKED");
+                ((TrainController)trainLoader.getController()).initialize();
+            }
+        });
+        testTab.setOnSelectionChanged(event -> {
+            boolean isSelected = ((Tab)(event.getTarget())).isSelected();
+            if(isSelected) {
+                System.out.println("TEST TAB CLICKED");
+                ((TestController)testLoader.getController()).initialize();
             }
         });
     }
