@@ -21,20 +21,20 @@ The data texts which are randomly inputted by users have a few constrainsts whic
 
 An example of the text is given below.
 ```
-A ZOO IS A FACILITY IN WHICH ANIMALS ARE HOUSED WITHIN ENCLOSURES AND DISPLAYED TO THE PUBLIC. ANIMALS IN ZOOS MAY BE ALLOWED TO BREED WHICH IS THE CASE FOR ANIMALS QUITE CLOSE TO EXTINCTION. 
-ZOOLOGY REFERS TO THE STUDY OF ANIMALS. THE TERM WAS DERIVED FROM A GREEK WORD. THE WORD ZOO 
-WAS FIRST USED OF THE LONDON ZOOLOGICAL GARDENS WHICH WAS OPENED IN THE EIGHTEENTH CENTURY. 
-ZOOS WERE VISITED BY OVER 181 MILLION PEOPLE ANNUALLY IN JUST THE UNITED STATES ALONE.
+A ZOO IS A FACILITY IN WHICH ANIMALS ARE HOUSED WITHIN ENCLOSURES AND DISPLAYED TO THE PUBLIC. ANIMALS IN ZOOS MAY BE 
+ALLOWED TO BREED WHICH IS THE CASE FOR ANIMALS QUITE CLOSE TO EXTINCTION. ZOOLOGY REFERS TO THE STUDY OF ANIMALS. 
+THE TERM WAS DERIVED FROM A GREEK WORD. THE WORD ZOO WAS FIRST USED OF THE LONDON ZOOLOGICAL GARDENS WHICH WAS OPENED 
+IN THE EIGHTEENTH CENTURY. ZOOS WERE VISITED BY OVER 181 MILLION PEOPLE ANNUALLY IN JUST THE UNITED STATES ALONE.
 ```
 
 In order to verify that a given paragrapgh contains all the alphabets as well as digrams, asimple application was developed which helps validate the text. This application is found by following this [link.](https://github.com/donpelumos/keystroke-paragraph-verifier)</a>
 
-##Dependencies
+## Dependencies
 * Operating System: Windows
 * Language: Python 3.4 or newer.
 * Libraries: Numpy, Pandas, Scipy, Scikit-Learn
 
-##Gallery
+## Gallery
 * Home Tab
 ![Home Tab](./pics/home.PNG)
 * Train Tab
