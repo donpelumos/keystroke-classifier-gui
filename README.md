@@ -35,11 +35,11 @@ In order to verify that a given paragrapgh contains all the alphabets as well as
 * Libraries: Numpy, Pandas, Scipy, Scikit-Learn
 
 ## Gallery
-* Home Tab
+* Home Tab<br/>
 ![Home Tab](./pics/home.PNG)
-* Train Tab
+* Train Tab<br/>
 ![Train New User](./pics/train_1.PNG)
-* Train Tab
+* Train Tab<br/>
 ![Train Existing User](./pics/train_2.PNG)
-* Test Tab
+* Test Tab<br/>
 ![Test (Predict) User](./pics/test.PNG)
