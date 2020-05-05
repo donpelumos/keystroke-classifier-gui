@@ -10,6 +10,8 @@ public class FeatureClassificationUtils {
 
     public static String classifyTestData(String pythonScriptFilePath, String dataSetFilePath, String testString, String testSize, String neighbourSize){
         String predictedClass = "";
+        pythonScriptFilePath = "\"" + pythonScriptFilePath + "\"";
+        dataSetFilePath = "\"" + dataSetFilePath + "\"";
         try
         {
             Runtime runtime = Runtime.getRuntime();
