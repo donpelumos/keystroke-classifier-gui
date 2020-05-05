@@ -123,6 +123,7 @@ public class TestController {
                                 "'\\keystroke-classifier-shared-folder\\keystroke-classifier-train.csv'";
                         Utils.showAlert("Error",errorDescription, errorBody, AlertType.ERROR);
                         Utils.logError(getClass(), errorDescription+ " => "+errorBody);
+                        Utils.logException(getClass(), e);
                         resultLabel.setText("RESULT : ");
                     }
                 }
