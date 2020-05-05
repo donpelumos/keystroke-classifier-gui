@@ -46,7 +46,7 @@ class KeyStrokeClassifierKNN:
                                                                             random_state=10)
 
         #specify the number of neighbours to be considered
-        knn_model = KNeighborsClassifier(n_neighbors=int(self.neighbour_size))
+        knn_model = KNeighborsClassifier(n_neighbors=int(self.neighbour_size) , metric="euclidean")
 
         # fit the model using the training data values and the training target values
         knn_model.fit(data_train, target_train)
